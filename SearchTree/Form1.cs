@@ -50,16 +50,17 @@ namespace SearchTree
 
         private void button2_Click(object sender, EventArgs e)
         {
-            StateSpace State1 = new StateSpace(1, new int[] { 5 });
+            StateSpace State1 = new StateSpace(3, new int[] { 3, 5, 4 });
+            State1.StateVec = new int[]{ 1, 3, 2};
             this.textBox1.AppendText(State1.printState());
-            StateSpace State2 = new StateSpace(4, new int[] { 5, 2, 4, 5 });
-            this.textBox1.AppendText(State2.printStateSpace());
+            this.textBox1.AppendText(State1.printStateSpace());
 
-            int[][,] Transitions1 = new int[3][,]{   new int[,] { {1,3}, {5,7} }, new int[,] { {0,2}, {4,6}, {8,10} }, new int[,] { {11,22}, {99,88}, {0,9} }  };
-
-            Action Action1 = new Action("Take", 3, Transitions1);
+            int[][,] Transitions1 = new int[3][,]{   new int[,] { {1,3}, {2,3} }, new int[,] { {0,2}, {3,2}, {5,4} }, new int[,] { {1,2}, {2,3}, {3,4} }  };
+            int[][] Preconditions1 = new int[3][] { new int[] { 0, 1, 2, }, new int[] { 0, 3, 5 }, new int[] { 1, 2, 3 } };
+            Action Action1 = new Action("Take", 3, Preconditions1,Transitions1);
             this.textBox1.AppendText(Action1.printAction());
-            this.Refresh();
+            
+            bool Worked = Action1.CheckPrecondition(State1);
 
 
             this.Refresh();
