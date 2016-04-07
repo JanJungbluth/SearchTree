@@ -1,0 +1,12 @@
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\bin\Debug\SearchTree.exe.config
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\bin\Debug\SearchTree.exe
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\bin\Debug\SearchTree.pdb
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\obj\Debug\SearchTree.Form1.resources
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\obj\Debug\SearchTree.Properties.Resources.resources
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\obj\Debug\SearchTree.csproj.GenerateResource.Cache
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\obj\Debug\SearchTree.exe
+c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTree\obj\Debug\SearchTree.pdb
+C:\Users\jan.jungbluth\Documents\Visual Studio 2015\Projects\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.dll
+C:\Users\jan.jungbluth\Documents\Visual Studio 2015\Projects\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.Drawing.dll
+C:\Users\jan.jungbluth\Documents\Visual Studio 2015\Projects\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
