@@ -10,48 +10,88 @@ namespace SearchTree
     {
         private String NAME;
         private int DIMENSION;
+        private int[][] PRECONDITIONS;
         private int[][,] TRANSITIONS;
 
-        public Action(string Name, int Dimension, int[][,] Transitions)
+        public Action(string Name, int Dimension, int[][] Preconditions, int[][,] Transitions)
         {
             this.NAME = Name;
             this.DIMENSION = Dimension;
-            TRANSITIONS = Transitions;            
+            this.PRECONDITIONS = Preconditions;
+            this.TRANSITIONS = Transitions;            
         }
+        
         public bool CheckPrecondition(StateSpace MyState)
         {
-            bool Check = false;
-
-            foreach(int[,] Pair in this.TRANSITIONS)
+            // first check thtat the StateVector and the Transitions has the same Dimension
+            if(MyState.DimensionSize != this.DIMENSION)
             {
-                // #TODO
+                throw new Exception("State Dimension != Action Dimension");
+            }
+            // dont be a pessimist about the preconditions
+            bool Check = true;
+            // check every StateDimension if at least on precondition is matched
+            for( int i = 0; i < this.DIMENSION && Check; i++)
+            {
+                // take the a Precondition vector for a dimension
+                int[] Value = this.PRECONDITIONS[i];
+                //reset the check
+                Check = false;
+                // got thru this vector and check if no precondition is statisfied
+                for (int j = 0; j < Value.Length; j++)
+                {
+                    // if one precondition matches the statevector than go further
+                    if (MyState.StateVec[i] == Value[j])
+                    {
+                        Check = true;
+                        break;
+                    }                        
+                }              
             }
             return Check;
         }
+        public StateSpace ExecuteAction(StateSpace MyState)
+        {
+
+            return null;
+        }
         public String printAction()
         {
-            
+            StringBuilder MySB = new StringBuilder(Environment.NewLine + "Action: " + this.NAME + Environment.NewLine);
 
-            StringBuilder MySB = new StringBuilder(" Transitions of " + this.NAME + Environment.NewLine);
-         
-            foreach(int[,] Pair in this.TRANSITIONS)
+            // Print the Preconditions
+            String temp = "( ";
+            MySB.AppendLine("Preconditions: ");
+            foreach (int[] Row in this.PRECONDITIONS)
             {
+                foreach(int Value in Row)
+                {
+                    temp += Value.ToString() + " ";
+                }
+                MySB.AppendLine(temp + " )" );
+                temp = "(";
+            }
+            MySB.Append(Environment.NewLine);
+            // Print the Transmitions
+            MySB.AppendLine("Transmition: ");
+            foreach (int[,] Pair in this.TRANSITIONS)
+            {
+                // Get the Rang (number of columns) of the Matrix
                 int Rang = Pair.Rank;
+                // Get the number of elements in the Matrix
                 int Laenge = Pair.Length;
+                // Calc the number of rows in the Matrix
                 int Rows = Laenge / Rang;
-
-                //MySB.Append(" Transitions of " + this.NAME + Environment.NewLine);
 
                 for ( int i = 0; i < Rows; i++)
                 {
                     MySB.Append(String.Format("({0},{1}) ", Pair.GetValue(new int[] { i, 0 }), Pair.GetValue(new int[] { i, 1 })));
                 }
                 MySB.Append(Environment.NewLine);
+
             }
 
-            MySB.Append(Environment.NewLine);
-
-            
+            MySB.Append(Environment.NewLine);                  
 
             return MySB.ToString();
         }
