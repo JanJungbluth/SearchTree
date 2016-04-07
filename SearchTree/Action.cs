@@ -52,8 +52,42 @@ namespace SearchTree
         }
         public StateSpace ExecuteAction(StateSpace MyState)
         {
+            bool breaktotop = false;
+            for(int i = 0; i < MyState.DimensionSize; i++)
+            {
+                // Get the first dimension from the StateSpace
+                
+                foreach (int[,] Pair in this.TRANSITIONS)
+                {
+                    // Get the Rang (number of columns) of the Matrix
+                    int Rang = Pair.Rank;
+                    // Get the number of elements in the Matrix
+                    int Laenge = Pair.Length;
+                    // Calc the number of rows in the Matrix
+                    int Rows = Laenge / Rang;
 
-            return null;
+                    for (int j = 0; j < Rows; j++)
+                    {
+                        // if there is a transition ...
+                        if ( MyState.StateVec[i] == Pair[j,0])
+                        {
+                            // .. then change the state and go to the next dimension
+                            MyState.StateVec[i] = Pair[j, 1];
+                            breaktotop = true;
+                            break;
+                        }
+                        
+                    }
+                    if (breaktotop)
+                    {
+                        breaktotop = false;
+                        break;
+                    }
+                                           
+                }
+            }
+            
+            return MyState;
         }
         public String printAction()
         {

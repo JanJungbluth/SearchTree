@@ -21,3 +21,4 @@ C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.Form1.resources
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.Properties.Resources.resources
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csproj.GenerateResource.Cache
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache

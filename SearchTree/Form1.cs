@@ -61,6 +61,9 @@ namespace SearchTree
             this.textBox1.AppendText(Action1.printAction());
             
             bool Worked = Action1.CheckPrecondition(State1);
+            if (Worked)
+                Action1.ExecuteAction(State1);
+            this.textBox1.AppendText(State1.printState());
 
 
             this.Refresh();
