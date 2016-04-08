@@ -65,6 +65,8 @@ namespace SearchTree
                 Action1.ExecuteAction(State1);
             this.textBox1.AppendText(State1.printState());
 
+            //Creat it worked
+
 
             this.Refresh();
         }
