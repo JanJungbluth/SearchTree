@@ -52,11 +52,12 @@ namespace SearchTree
         }
         public StateSpace ExecuteAction(StateSpace MyState)
         {
+            // A action is executed by this function an it will change the state
             bool breaktotop = false;
+            // Go thru all dimension of the state space
             for(int i = 0; i < MyState.DimensionSize; i++)
             {
-                // Get the first dimension from the StateSpace
-                
+                // Get the first dimension from the transitionsspace
                 foreach (int[,] Pair in this.TRANSITIONS)
                 {
                     // Get the Rang (number of columns) of the Matrix
