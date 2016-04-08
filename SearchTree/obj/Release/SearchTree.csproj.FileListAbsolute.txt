@@ -1,0 +1,12 @@
+Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Release\SearchTree.exe.config
+Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Release\SearchTree.exe
+Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Release\SearchTree.pdb
+Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Release\Microsoft.Msagl.dll
+Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Release\Microsoft.Msagl.Drawing.dll
+Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Release\Microsoft.Msagl.GraphViewerGdi.dll
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.csprojResolveAssemblyReference.cache
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.Form1.resources
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.Properties.Resources.resources
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.csproj.GenerateResource.Cache
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.exe
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.pdb
