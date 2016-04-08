@@ -10,3 +10,15 @@ Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.Properties.Resour
 Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.csproj.GenerateResource.Cache
 Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.exe
 Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Release\SearchTree.pdb
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Release\SearchTree.exe.config
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Release\SearchTree.exe
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Release\SearchTree.pdb
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Release\SearchTree.exe
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Release\SearchTree.pdb
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Release\Microsoft.Msagl.dll
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Release\Microsoft.Msagl.Drawing.dll
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Release\Microsoft.Msagl.GraphViewerGdi.dll
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Release\SearchTree.csprojResolveAssemblyReference.cache
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Release\SearchTree.Form1.resources
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Release\SearchTree.Properties.Resources.resources
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Release\SearchTree.csproj.GenerateResource.Cache
