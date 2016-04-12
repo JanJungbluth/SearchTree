@@ -50,7 +50,7 @@ namespace SearchTree
 
         private void button2_Click(object sender, EventArgs e)
         {
-            StateSpace State1 = new StateSpace(3, new int[] { 3, 5, 4 });
+            StateSpace State1 = new StateSpace(5, new int[] { 3, 5, 4 });
             State1.StateVec = new int[]{ 1, 3, 2};
             this.textBox1.AppendText(State1.printState());
             this.textBox1.AppendText(State1.printStateSpace());
@@ -64,6 +64,9 @@ namespace SearchTree
             if (Worked)
                 Action1.ExecuteAction(State1);
             this.textBox1.AppendText(State1.printState());
+
+            this.textBox1.AppendText(TagsRobot.EMPTY.ToString()) ;
+            this.textBox1.AppendText(TagsRobot.AT_HOME_POS.ToString());
 
             //Creat it worked
 

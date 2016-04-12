@@ -6,6 +6,22 @@ using System.Threading.Tasks;
 
 namespace SearchTree
 {
+    #region "Enumeration"
+
+    public enum ActionTagsHumans
+    {
+        BE_IDLE = 0, TAKE_TOOL, HOLD_PART, LOOSE_SCREW, LOOSE_SCREW_FULLY, REMOVE_SCREW, LOOSE_AND_REMOVE_SCREW,
+        RETURN_TOOL, RELEASE_PART, PLACE_SCREW_IN_BOX
+    };
+
+    public enum ActionTagsRobot
+    {
+        BE_IDLE = 0, HAND_TOOL, CHANGE_EFFECTOR, HOLD_PART, LOOSE_SCREW, LOOSE_SCREW_FULLY, REMOVE_SCREW, LOOSE_AND_REMOVE_SCREW,
+        HAND_SCREW_BOX, RETURN_TOOL, RELEASE_PART, PLACE_SCREW_IN_BOX, RETURN_SCREW_BOX
+    };
+
+
+    #endregion
     class Action
     {
         private String NAME;
@@ -57,7 +73,7 @@ namespace SearchTree
             // Go thru all dimension of the state space
             for(int i = 0; i < MyState.DimensionSize; i++)
             {
-                // Get the first dimension from the transitionsspace
+                // Get one dimension form the transitionsspace and check it against the statespace
                 foreach (int[,] Pair in this.TRANSITIONS)
                 {
                     // Get the Rang (number of columns) of the Matrix
@@ -69,7 +85,7 @@ namespace SearchTree
 
                     for (int j = 0; j < Rows; j++)
                     {
-                        // if there is a transition ...
+                        // if there is a transition for the state...
                         if ( MyState.StateVec[i] == Pair[j,0])
                         {
                             // .. then change the state and go to the next dimension
@@ -80,7 +96,7 @@ namespace SearchTree
                         
                     }
                     if (breaktotop)
-                    {
+                    {   // to jump to the next dimension break this loop
                         breaktotop = false;
                         break;
                     }
@@ -108,7 +124,7 @@ namespace SearchTree
             }
             MySB.Append(Environment.NewLine);
             // Print the Transmitions
-            MySB.AppendLine("Transmition: ");
+            MySB.AppendLine("Transition: ");
             foreach (int[,] Pair in this.TRANSITIONS)
             {
                 // Get the Rang (number of columns) of the Matrix
