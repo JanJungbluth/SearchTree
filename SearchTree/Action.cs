@@ -25,126 +25,123 @@ namespace SearchTree
     class Action
     {
         private String NAME;
-        private int DIMENSION;
-        private int[][] PRECONDITIONS;
-        private int[][,] TRANSITIONS;
+        private int[] PRE_DIMENSIONS; // Dimensions with preconditions
+        private int[] PRECONDITIONS; // Preconditions for that dimension
+        private int[] TRA_DIMENSIONS; // Dimensions with transmisions
+        private int[] TRANSITIONS; // transition of the coresponding dimension
 
-        public Action(string Name, int Dimension, int[][] Preconditions, int[][,] Transitions)
+        public Action(string Name, int[] PreDimension, int[] Preconditions, int[] TraDimensions, int[] Transitions)
         {
+            
             this.NAME = Name;
-            this.DIMENSION = Dimension;
+            this.PRE_DIMENSIONS = PreDimension;
             this.PRECONDITIONS = Preconditions;
+            this.TRA_DIMENSIONS = TraDimensions;
             this.TRANSITIONS = Transitions;            
         }
         
         public bool CheckPrecondition(StateSpace MyState)
         {
-            // first check thtat the StateVector and the Transitions has the same Dimension
-            if(MyState.DimensionSize != this.DIMENSION)
+            //there are no preconditions if the precondition dimension is zero
+            if(this.PRE_DIMENSIONS.Length == 0)
             {
-                throw new Exception("State Dimension != Action Dimension");
+                return true;
             }
-            // dont be a pessimist about the preconditions
+            // if it is not zero there are constrained dimensions
             bool Check = true;
-            // check every StateDimension if at least on precondition is matched
-            for( int i = 0; i < this.DIMENSION && Check; i++)
+            int i = 0;
+            // go thru each constrained dimension and check the Precondition
+            foreach( int PreDim in this.PRE_DIMENSIONS)
             {
-                // take the a Precondition vector for a dimension
-                int[] Value = this.PRECONDITIONS[i];
-                //reset the check
                 Check = false;
-                // got thru this vector and check if no precondition is statisfied
-                for (int j = 0; j < Value.Length; j++)
+                if(MyState.StateVec[PreDim] == this.PRECONDITIONS[i++])
                 {
-                    // if one precondition matches the statevector than go further
-                    if (MyState.StateVec[i] == Value[j])
-                    {
-                        Check = true;
-                        break;
-                    }                        
-                }              
+                    Check = true;
+                }
+                
             }
+
             return Check;
         }
         public StateSpace ExecuteAction(StateSpace MyState)
         {
             // A action is executed by this function an it will change the state
-            bool breaktotop = false;
+           // bool breaktotop = false;
             // Go thru all dimension of the state space
-            for(int i = 0; i < MyState.DimensionSize; i++)
-            {
-                // Get one dimension form the transitionsspace and check it against the statespace
-                foreach (int[,] Pair in this.TRANSITIONS)
-                {
-                    // Get the Rang (number of columns) of the Matrix
-                    int Rang = Pair.Rank;
-                    // Get the number of elements in the Matrix
-                    int Laenge = Pair.Length;
-                    // Calc the number of rows in the Matrix
-                    int Rows = Laenge / Rang;
+            //for(int i = 0; i < MyState.DimensionSize; i++)
+           // {
+            //    // Get one dimension form the transitionsspace and check it against the statespace
+            //    foreach (int[,] Pair in this.TRANSITIONS)
+            //    {
+            //        // Get the Rang (number of columns) of the Matrix
+            //        int Rang = Pair.Rank;
+            //        // Get the number of elements in the Matrix
+            //        int Laenge = Pair.Length;
+            //        // Calc the number of rows in the Matrix
+            //        int Rows = Laenge / Rang;
 
-                    for (int j = 0; j < Rows; j++)
-                    {
-                        // if there is a transition for the state...
-                        if ( MyState.StateVec[i] == Pair[j,0])
-                        {
-                            // .. then change the state and go to the next dimension
-                            MyState.StateVec[i] = Pair[j, 1];
-                            breaktotop = true;
-                            break;
-                        }
+            //        for (int j = 0; j < Rows; j++)
+            //        {
+            //            // if there is a transition for the state...
+            //            if ( MyState.StateVec[i] == Pair[j,0])
+            //            {
+            //                // .. then change the state and go to the next dimension
+            //                MyState.StateVec[i] = Pair[j, 1];
+            //                breaktotop = true;
+            //                break;
+            //            }
                         
-                    }
-                    if (breaktotop)
-                    {   // to jump to the next dimension break this loop
-                        breaktotop = false;
-                        break;
-                    }
+            //        }
+            //        if (breaktotop)
+            //        {   // to jump to the next dimension break this loop
+            //            breaktotop = false;
+            //            break;
+            //        }
                                            
-                }
-            }
+            //    }
+            //}
             
             return MyState;
         }
         public String printAction()
         {
-            StringBuilder MySB = new StringBuilder(Environment.NewLine + "Action: " + this.NAME + Environment.NewLine);
+            //StringBuilder MySB = new StringBuilder(Environment.NewLine + "Action: " + this.NAME + Environment.NewLine);
 
-            // Print the Preconditions
-            String temp = "( ";
-            MySB.AppendLine("Preconditions: ");
-            foreach (int[] Row in this.PRECONDITIONS)
-            {
-                foreach(int Value in Row)
-                {
-                    temp += Value.ToString() + " ";
-                }
-                MySB.AppendLine(temp + " )" );
-                temp = "(";
-            }
-            MySB.Append(Environment.NewLine);
-            // Print the Transmitions
-            MySB.AppendLine("Transition: ");
-            foreach (int[,] Pair in this.TRANSITIONS)
-            {
-                // Get the Rang (number of columns) of the Matrix
-                int Rang = Pair.Rank;
-                // Get the number of elements in the Matrix
-                int Laenge = Pair.Length;
-                // Calc the number of rows in the Matrix
-                int Rows = Laenge / Rang;
+            //// Print the Preconditions
+            //String temp = "( ";
+            //MySB.AppendLine("Preconditions: ");
+            //foreach (int[] Row in this.PRECONDITIONS)
+            //{
+            //    foreach(int Value in Row)
+            //    {
+            //        temp += Value.ToString() + " ";
+            //    }
+            //    MySB.AppendLine(temp + " )" );
+            //    temp = "(";
+            //}
+            //MySB.Append(Environment.NewLine);
+            //// Print the Transmitions
+            //MySB.AppendLine("Transition: ");
+            //foreach (int[,] Pair in this.TRANSITIONS)
+            //{
+            //    // Get the Rang (number of columns) of the Matrix
+            //    int Rang = Pair.Rank;
+            //    // Get the number of elements in the Matrix
+            //    int Laenge = Pair.Length;
+            //    // Calc the number of rows in the Matrix
+            //    int Rows = Laenge / Rang;
 
-                for ( int i = 0; i < Rows; i++)
-                {
-                    MySB.Append(String.Format("({0},{1}) ", Pair.GetValue(new int[] { i, 0 }), Pair.GetValue(new int[] { i, 1 })));
-                }
-                MySB.Append(Environment.NewLine);
+            //    for ( int i = 0; i < Rows; i++)
+            //    {
+            //        MySB.Append(String.Format("({0},{1}) ", Pair.GetValue(new int[] { i, 0 }), Pair.GetValue(new int[] { i, 1 })));
+            //    }
+            //    MySB.Append(Environment.NewLine);
 
-            }
+            //}
 
-            MySB.Append(Environment.NewLine);                  
+            //MySB.Append(Environment.NewLine);                  
 
-            return MySB.ToString();
+            return "";//MySB.ToString();
         }
 
     }

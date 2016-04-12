@@ -50,25 +50,42 @@ namespace SearchTree
 
         private void button2_Click(object sender, EventArgs e)
         {
-            StateSpace State1 = new StateSpace(5, new int[] { 3, 5, 4 });
-            State1.StateVec = new int[]{ 1, 3, 2};
-            this.textBox1.AppendText(State1.printState());
-            this.textBox1.AppendText(State1.printStateSpace());
+            const int StateSpaceDim = 14;
 
-            int[][,] Transitions1 = new int[3][,]{   new int[,] { {1,3}, {2,3} }, new int[,] { {0,2}, {3,2}, {5,4} }, new int[,] { {1,2}, {2,3}, {3,4} }  };
-            int[][] Preconditions1 = new int[3][] { new int[] { 0, 1, 2, }, new int[] { 0, 3, 5 }, new int[] { 1, 2, 3 } };
-            Action Action1 = new Action("Take", 3, Preconditions1,Transitions1);
-            this.textBox1.AppendText(Action1.printAction());
-            
-            bool Worked = Action1.CheckPrecondition(State1);
-            if (Worked)
-                Action1.ExecuteAction(State1);
-            this.textBox1.AppendText(State1.printState());
+            StateSpace StartState = new StateSpace(StateSpaceDim, new int[] { 3, 9, 2, 2, 2, 2, 2, 5, 2, 5, 4, 6, 6, 6 });
+            StartState.StateVec = new int[]{ (int)TagsRobot.EMPTY, (int)TagsRobot.AT_HOME_POS,
+                                             (int)TagsHuman.KNOW_TASK,(int)TagsHuman.KNOW_SCREW,(int)TagsHuman.KNOW_TOOL,(int)TagsHuman.KNOW_ASSISTANCE,
+                                             (int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,(int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,
+                                             (int)TagsScrew.TIGHTENED, (int)TagsScrew.AT_SCREW_POS, (int)TagsTool.AT_TOOL_MAGAZINE_POS,  (int)TagsBox.AT_BOX_MAGAZINE_POS };
 
-            this.textBox1.AppendText(TagsRobot.EMPTY.ToString()) ;
-            this.textBox1.AppendText(TagsRobot.AT_HOME_POS.ToString());
+            StateSpace TargetState = new StateSpace(StateSpaceDim, new int[] { 3, 9, 2, 2, 2, 2, 2, 5, 2, 5, 4, 6, 6, 6 });
+            TargetState.StateVec = new int[]{(int)TagsRobot.EMPTY, (int)TagsRobot.AT_HOME_POS,
+                                             (int)TagsHuman.KNOW_TASK,(int)TagsHuman.KNOW_SCREW,(int)TagsHuman.KNOW_TOOL,(int)TagsHuman.KNOW_ASSISTANCE,
+                                             (int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,(int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,
+                                             (int)TagsScrew.REMOVED, (int)TagsScrew.AT_BOX_MAGAZINE_POS, (int)TagsTool.AT_TOOL_MAGAZINE_POS,  (int)TagsBox.AT_BOX_MAGAZINE_POS };
 
-            //Creat it worked
+            this.textBox1.AppendText(StartState.printState());
+            this.textBox1.AppendText(TargetState.printState());
+            this.Refresh();
+
+
+
+            Action GOTO_HOME_POS = new Action("GOTO_HOME_POS", new int[] { }, new int[] { }, new int[] { 2 }, new int[] { 0 });
+            bool test = GOTO_HOME_POS.CheckPrecondition(StartState);
+            //int[][,] Transitions1 = new int[StateSpaceDim][,]{   new int[,] { {1,3}, {2,3} }, new int[,] { {0,2}, {3,2}, {5,4} }, new int[,] { {1,2}, {2,3}, {3,4} }  };
+
+            //Action Action1 = new Action("Take", 3, Preconditions1,Transitions1);
+            //this.textBox1.AppendText(Action1.printAction());
+
+            // bool Worked = Action1.CheckPrecondition(StartState);
+            // if (Worked)
+            //     Action1.ExecuteAction(StartState);
+            // this.textBox1.AppendText(StartState.printState());
+
+            //// this.textBox1.AppendText(TagsRobot.EMPTY.ToString()) ;
+            // this.textBox1.AppendText(TagsRobot.AT_HOME_POS.ToString());
+
+            // //Creat it worked
 
 
             this.Refresh();
