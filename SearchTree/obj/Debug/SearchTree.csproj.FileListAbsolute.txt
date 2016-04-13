@@ -10,19 +10,19 @@ c:\users\jan.jungbluth\documents\visual studio 2015\Projects\SearchTree\SearchTr
 C:\Users\jan.jungbluth\Documents\Visual Studio 2015\Projects\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.dll
 C:\Users\jan.jungbluth\Documents\Visual Studio 2015\Projects\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.Drawing.dll
 C:\Users\jan.jungbluth\Documents\Visual Studio 2015\Projects\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
+Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Debug\SearchTree.exe.config
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Debug\SearchTree.exe
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Debug\SearchTree.pdb
+Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\SearchTree.exe.config
-C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.exe
-C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.pdb
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\SearchTree.exe
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\SearchTree.pdb
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.dll
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.Drawing.dll
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.Form1.resources
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.Properties.Resources.resources
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csproj.GenerateResource.Cache
-C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache
-Z:\Studium_Lu\Git\SearchTree\SearchTree\bin\Debug\SearchTree.exe.config
-Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Debug\SearchTree.exe
-Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Debug\SearchTree.pdb
-Z:\Studium_Lu\Git\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.exe
+C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.pdb

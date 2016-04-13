@@ -6,38 +6,9 @@ using System.Threading.Tasks;
 
 namespace SearchTree
 {
-    #region "Enumeration"
+    
 
-    public enum TagsRobot
-    {
-        EMPTY = 0, HAS_GRIPPER, HAS_SCRWEDRIVER, AT_HOME_POS = 0, AT_LEFT_HAND_POS, AT_RIGHT_HAND_POS, AT_GRIPPER_MAGAZINE_POS, AT_SCREWDRIVER_MAGAZIN_POS, AT_SCREW_POS,
-        AT_FULLY_LOOSE_SCREW_POS, AT_TOOL_MAGAZINE_POS
-    };
-  
-    public enum TagsHuman
-    {
-        DONT_KNOW_TASK = 0, KNOW_TASK,
-        DONT_KNOW_SCREW = 0, KNOW_SCREW,
-        DONT_KNOW_TOOL = 0, KNOW_TOOL,
-        DONT_KNOW_ASSISTANCE = 0, KNOW_ASSISTANCE,
-        EMPTY = 0, NOT_EMPTY,
-        AT_BODY_POS = 0, AT_LEFT_HAND_POS, AT_RIGHT_HAND_POS, AT_SCREW_POS, AT_FULLY_LOOSE_SCREW_POS, AT_TOOL_POS, AT_SCREWBOX_POS
-    };
-    public enum TagsScrew
-    {
-        TIGHTENED = 0, LOOSE, FULLY_LOOSE, REMOVED,
-        AT_SCREW_POS = 0, AT_FULLY_LOOSE_SCREW_POS, AT_GRIPPER, AT_HUMAN_LEFT_HAND, AT_HUMAN_RIGHT_HAND, AT_SCREWBOX_POS
-    };
-    public enum TagsTool
-    {
-        AT_TOOL_POS = 0, AT_LEFT_HAND_POS, AT_RIGHT_HAND_POS, AT_GRIPPER, AT_HUMAN_LEFT_HAND, AT_HUMAN_RIGHT_HAND,
-    };
-    public enum TagsBox
-    {
-        AT_BOX_POS = 0, AT_LEFT_HAND_POS, AT_RIGHT_HAND_POS, AT_GRIPPER, AT_HUMAN_LEFT_HAND, AT_HUMAN_RIGHT_HAND,
-    };
-    #endregion
-    class StateSpace
+    public class StateSpace
     {
         private int STATE_SPACE_DIMENSION; // Get the Dimension of the statespace
         private int[] STATES_SIZE_VEC; // Get for each Dimension the number of possible states

@@ -50,28 +50,30 @@ namespace SearchTree
 
         private void button2_Click(object sender, EventArgs e)
         {
-            StateSpace State1 = new StateSpace(5, new int[] { 3, 5, 4 });
-            State1.StateVec = new int[]{ 1, 3, 2};
-            this.textBox1.AppendText(State1.printState());
-            this.textBox1.AppendText(State1.printStateSpace());
 
-            int[][,] Transitions1 = new int[3][,]{   new int[,] { {1,3}, {2,3} }, new int[,] { {0,2}, {3,2}, {5,4} }, new int[,] { {1,2}, {2,3}, {3,4} }  };
-            int[][] Preconditions1 = new int[3][] { new int[] { 0, 1, 2, }, new int[] { 0, 3, 5 }, new int[] { 1, 2, 3 } };
-            Action Action1 = new Action("Take", 3, Preconditions1,Transitions1);
-            this.textBox1.AppendText(Action1.printAction());
-            
-            bool Worked = Action1.CheckPrecondition(State1);
-            if (Worked)
-                Action1.ExecuteAction(State1);
-            this.textBox1.AppendText(State1.printState());
-
-            this.textBox1.AppendText(TagsRobot.EMPTY.ToString()) ;
-            this.textBox1.AppendText(TagsRobot.AT_HOME_POS.ToString());
-
-            //Creat it worked
-
-
+            StateSpace StartState = Helper.createStartState();
+            StateSpace TargetState = Helper.createTargetState();
+            this.textBox1.AppendText(StartState.printState());
+            this.textBox1.AppendText(TargetState.printState());
             this.Refresh();
+            this.textBox1.AppendText("Full Action List" + Environment.NewLine);
+            List<Action> MyRobotActionList = Helper.createRobotActionSet();
+            foreach(Action CurAction in MyRobotActionList)
+            {
+                this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
+            }
+            this.Refresh();
+           
+            List<Action> MyRobotFeasibleActionList = Helper.PossibleActionSet(MyRobotActionList, StartState);
+            this.textBox1.AppendText("Constarined Action List" + Environment.NewLine);
+            foreach (Action CurAction in MyRobotFeasibleActionList)
+            {
+                this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
+            }
+            this.Refresh();
+
+
+            
         }
     }
 }
