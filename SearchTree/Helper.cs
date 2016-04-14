@@ -325,9 +325,8 @@ namespace SearchTree
                     PosActionSet.Add(CurAction);
                 }
             }
-
             return PosActionSet;
         }
-
+        
     }
 }

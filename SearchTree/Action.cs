@@ -25,6 +25,7 @@ namespace SearchTree
     public class Action
     {
         private String NAME;
+        private int COST;
         private int[] PRE_DIMENSIONS; // Dimensions with preconditions
         private int[] PRECONDITIONS; // Preconditions for that dimension
         private int[] TRA_DIMENSIONS; // Dimensions with transmisions
@@ -37,9 +38,14 @@ namespace SearchTree
             this.PRE_DIMENSIONS = PreDimension;
             this.PRECONDITIONS = Preconditions;
             this.TRA_DIMENSIONS = TraDimensions;
-            this.TRANSITIONS = Transitions;            
+            this.TRANSITIONS = Transitions;
+            this.COST = 0; // #TODO use the costs!!!   
         }
-        
+        public int Cost
+        {
+            get { return this.COST; }
+            set { this.COST = value; }
+        }
         public bool CheckPrecondition(StateSpace MyState)
         {
             //there are no preconditions if the precondition dimension is zero
@@ -64,6 +70,7 @@ namespace SearchTree
         }
         public StateSpace ExecuteAction(StateSpace MyState)
         {
+            StateSpace NewState = new StateSpace(MyState.DimensionSize,MyState.StatesSizeVec);
             // An action is executed by this function an it will change the state
             int i = 0;
             //Go thru all transmission dimension 
@@ -72,7 +79,8 @@ namespace SearchTree
                 // for each ellement in Tra_Dimension there is one transition
                 MyState.setStateValue(TraDim, this.TRANSITIONS[i++]);                                
             }
-            return MyState;
+            NewState = MyState;
+            return NewState;
         }
         public String Name
         {

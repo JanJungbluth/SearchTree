@@ -22,35 +22,43 @@ namespace SearchTree
         private void button1_Click(object sender, EventArgs e)
         {
 
-            //create a form 
+            ////create a form 
             //System.Windows.Forms.Form form = new System.Windows.Forms.Form();
-            //create a viewer object 
-            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            //create a graph object 
-            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            //create the graph content 
-            graph.AddEdge("A", "B");
-            graph.AddEdge("B", "C");
-            graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-            graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
-            Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
-            c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-            c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
-            //bind the graph to the viewer 
-            viewer.Graph = graph;
-            //associate the viewer with the form 
-            this.SuspendLayout();
-            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Controls.Add(viewer);
-            this.ResumeLayout();
-            //show the form 
-            this.Refresh();
+            ////create a viewer object 
+            //Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+            ////create a graph object 
+            //Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+            ////create the graph content 
+            //graph.AddEdge("A", "B");
+            //graph.AddEdge("B", "C");
+            //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+            //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+            //graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
+            //Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
+            //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
+            //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+            ////bind the graph to the viewer 
+            //viewer.Graph = graph;
+            ////associate the viewer with the form 
+            //this.SuspendLayout();
+            //viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            //this.Controls.Add(viewer);
+            //this.ResumeLayout();
+            ////show the form 
+            //this.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            //create a form 
+            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            //create a viewer object 
+            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+            //create a graph object 
+            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+          
+            
+            #region Set-Up
             StateSpace StartState = Helper.createStartState();
             StateSpace TargetState = Helper.createTargetState();
             this.textBox1.AppendText(StartState.printState());
@@ -63,17 +71,45 @@ namespace SearchTree
                 this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
             }
             this.Refresh();
-           
+            #endregion
+
+            // Create new instance
+
             List<Action> MyRobotFeasibleActionList = Helper.PossibleActionSet(MyRobotActionList, StartState);
+            List<StateSpace> NewStateList = new List<StateSpace>();
+
+            Microsoft.Msagl.Drawing.Node StartNode = new Microsoft.Msagl.Drawing.Node(StartState.printEnumState());
+            graph.AddNode(StartNode);
+            StateSpace temp;
             this.textBox1.AppendText("Constarined Action List" + Environment.NewLine);
+
             foreach (Action CurAction in MyRobotFeasibleActionList)
             {
                 this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
+                temp = CurAction.ExecuteAction(StartState);
+                Microsoft.Msagl.Drawing.Node ChildNode = new Microsoft.Msagl.Drawing.Node(temp.printEnumState());
+                
+                NewStateList.Add(temp);
+                graph.AddNode(ChildNode);
+                graph.AddEdge(StartNode.Id, CurAction.Name, ChildNode.Id);
+
             }
             this.Refresh();
-
-
             
+
+          
+
+           
+
+            //bind the graph to the viewer 
+            viewer.Graph = graph;
+            //associate the viewer with the form 
+            this.SuspendLayout();
+            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Controls.Add(viewer);
+            this.ResumeLayout();
+            this.Refresh();
+
         }
     }
 }
