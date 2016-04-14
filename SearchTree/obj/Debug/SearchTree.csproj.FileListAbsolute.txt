@@ -20,7 +20,6 @@ C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\SearchTree.pdb
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.dll
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.Drawing.dll
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
-C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.Form1.resources
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.Properties.Resources.resources
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csproj.GenerateResource.Cache

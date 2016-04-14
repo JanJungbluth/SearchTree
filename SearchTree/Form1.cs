@@ -50,8 +50,7 @@ namespace SearchTree
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //create a form 
-            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            System.Windows.Forms.Form Graphform = new System.Windows.Forms.Form();
             //create a viewer object 
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             //create a graph object 
@@ -100,11 +99,12 @@ namespace SearchTree
             //bind the graph to the viewer 
             viewer.Graph = graph;
             //associate the viewer with the form 
-            this.SuspendLayout();
+            Graphform.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Controls.Add(viewer);
-            this.ResumeLayout();
-            this.Refresh();
+            this.panel1.Controls.Add(viewer);
+            this.panel1.Controls.Add(viewer);
+            this.panel1.ResumeLayout();
+            this.panel1.Refresh();
             
 
         }
