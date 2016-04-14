@@ -221,7 +221,7 @@ namespace SearchTree
 
             #region Loose Joint Statements
             Action LOOSE_SCREW = new Action("LOOSE_SCREW",
-                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsDim.RobotEffector,     (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.HAS_SCRWEDRIVER, (int)TagsRobot.AT_SCREW_POS, (int)TagsScrew.TIGHTENED, (int)TagsScrew.AT_SCREW_POS },
                 new int[] { (int)TagsDim.Screw },
                 new int[] { (int)TagsScrew.LOOSE });

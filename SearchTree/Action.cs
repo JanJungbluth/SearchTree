@@ -54,16 +54,21 @@ namespace SearchTree
                 return true;
             }
             // if it is not zero there are constrained dimensions
-            bool Check = true;
+            bool Check = false;
             int i = 0;
             // go thru each constrained dimension and check the Precondition
             foreach( int PreDim in this.PRE_DIMENSIONS)
             {
 
-                Check = false;
+                
                 if(MyState.StateVec[PreDim] == this.PRECONDITIONS[i++])
                 {
                     Check = true;
+                }
+                else
+                {
+                    Check = false;
+                    break;
                 }                
             }
             return Check;

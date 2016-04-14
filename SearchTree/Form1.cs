@@ -94,12 +94,8 @@ namespace SearchTree
                 graph.AddEdge(StartNode.Id, CurAction.Name, ChildNode.Id);
 
             }
-            this.Refresh();
-            
-
-          
-
-           
+            this.Refresh();         
+                     
 
             //bind the graph to the viewer 
             viewer.Graph = graph;
@@ -109,6 +105,12 @@ namespace SearchTree
             this.Controls.Add(viewer);
             this.ResumeLayout();
             this.Refresh();
+            
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
         }
     }
