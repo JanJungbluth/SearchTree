@@ -327,6 +327,19 @@ namespace SearchTree
             }
             return PosActionSet;
         }
+
+        public static List<StateSpace> IsTargetState(List<StateSpace> StatesWaitToExpand, StateSpace TargetState)
+        {
+            List<StateSpace> IsTargetState = new List<StateSpace>();
+            foreach(StateSpace CurState in StatesWaitToExpand)
+            {
+                if(CurState == TargetState)
+                {
+                    IsTargetState.Add(CurState);
+                }
+            }
+            return IsTargetState;
+        }
         
     }
 }

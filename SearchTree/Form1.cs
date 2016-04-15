@@ -14,97 +14,146 @@ namespace SearchTree
 {
     public partial class Form1 : Form
     {
+        private int StepCounter = 0;
+        //create a new form for the viewer
+        System.Windows.Forms.Form Graphform = new System.Windows.Forms.Form();
+        //create a viewer object 
+        Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+        //create a graph object 
+        Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+        //create a list with all states which have to expand in the next step
+        private List<StateSpace> StatesWaitingToExpand = new List<StateSpace>();
+        //create a list with all possible actions
+        private List<Action> FullActionSet = new List<Action>();
+        //create a list for all applicable actions in a given state
+        private List<Action> ApplicableActionSet = new List<Action>();
+
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Show a new iteration step in the textbox
+            this.textBox1.AppendText(Environment.NewLine
+                + String.Format("-------- Stepnumber {0} ------- ",this.StepCounter++ )
+                + Environment.NewLine);
+            List<StateSpace> Temp = new List<StateSpace>(this.StatesWaitingToExpand);
+            
+            // Now we have to expand each state in the StatesWaitToExpand List and expand them
+            foreach(StateSpace CurState in Temp)
+            {
+                // create the new applicable action list ...
+                this.ApplicableActionSet = Helper.PossibleActionSet(this.FullActionSet, CurState);
+                // ..and print them to the textbox
+                this.textBox1.AppendText(Environment.NewLine + "Applicable Action List" + Environment.NewLine);
+                foreach (Action CurAction in this.ApplicableActionSet)
+                    this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
 
-            ////create a form 
-            //System.Windows.Forms.Form form = new System.Windows.Forms.Form();
-            ////create a viewer object 
-            //Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            ////create a graph object 
-            //Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            ////create the graph content 
-            //graph.AddEdge("A", "B");
-            //graph.AddEdge("B", "C");
-            //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-            //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            //graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
-            //Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
-            //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-            //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
-            ////bind the graph to the viewer 
-            //viewer.Graph = graph;
-            ////associate the viewer with the form 
-            //this.SuspendLayout();
-            //viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            //this.Controls.Add(viewer);
-            //this.ResumeLayout();
-            ////show the form 
-            //this.Refresh();
+                foreach (Action CurAction in this.ApplicableActionSet)
+                {
+                    //Create the new state
+                    StateSpace NewState = CurAction.ExecuteAction(CurState);
+                    // save the new state in the StatesWaitToExpand list
+                    this.StatesWaitingToExpand.Add(NewState);
+                    //Get the CurState Node
+                    Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
+                    // Add a new node to the graph
+                    Microsoft.Msagl.Drawing.Node NewNode = new Microsoft.Msagl.Drawing.Node(NewState.printEnumState());
+                    this.graph.AddNode(NewNode);
+                    // Add a edge ( and the nodes ) to the graph
+                    this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
+                    //Remove the old state
+                    this.StatesWaitingToExpand.Remove(CurState);
+                }
+                
+            }
+
+            // freeze the form logic
+            Graphform.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            //bind the graph to the viewer 
+            viewer.Graph = graph;
+            // add the Form control to the tabcontroler
+            this.tabControl1.TabPages[0].Controls.Add(viewer);
+            // doch the viewer with max size to the tabpage
+            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            // de-freeze the form logic
+            Graphform.ResumeLayout();
+            this.tabControl1.TabPages[0].ResumeLayout();
+            // refresh all visual things
+            this.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Form Graphform = new System.Windows.Forms.Form();
-            //create a viewer object 
-            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            //create a graph object 
-            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-          
-            
-            #region Set-Up
+            // The first step is to generate the target and start state
             StateSpace StartState = Helper.createStartState();
             StateSpace TargetState = Helper.createTargetState();
-            this.textBox1.AppendText(StartState.printState());
-            this.textBox1.AppendText(TargetState.printState());
-            this.Refresh();
+            // We print them both to the textbox
+            this.textBox1.AppendText("StartState: " + StartState.printEnumState()+Environment.NewLine);
+            this.textBox1.AppendText("TargetState: " + TargetState.printEnumState()+Environment.NewLine);
+            
+            // Then we create the all robot actions ...
+            this.FullActionSet = Helper.createRobotActionSet();
+            // and then we print them in the textbox
             this.textBox1.AppendText("Full Action List" + Environment.NewLine);
-            List<Action> MyRobotActionList = Helper.createRobotActionSet();
-            foreach(Action CurAction in MyRobotActionList)
-            {
+            foreach (Action CurAction in FullActionSet)
                 this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
-            }
-            this.Refresh();
-            #endregion
+            
+            // We create the applicable action list
+            this.ApplicableActionSet = Helper.PossibleActionSet(FullActionSet, StartState);
+            // ..and print them to the textbox
+            this.textBox1.AppendText(Environment.NewLine + "Applicable Action List" + Environment.NewLine);
+            foreach (Action CurAction in this.ApplicableActionSet)
+                this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
 
-            // Create new instance
-
-            List<Action> MyRobotFeasibleActionList = Helper.PossibleActionSet(MyRobotActionList, StartState);
-            List<StateSpace> NewStateList = new List<StateSpace>();
-
+            //create the root node for the graph
             Microsoft.Msagl.Drawing.Node StartNode = new Microsoft.Msagl.Drawing.Node(StartState.printEnumState());
-            graph.AddNode(StartNode);
-            StateSpace temp;
-            this.textBox1.AppendText("Constarined Action List" + Environment.NewLine);
-
-            foreach (Action CurAction in MyRobotFeasibleActionList)
+            
+            this.graph.AddNode(StartNode);
+            // Next we execute the applicable actions to the startstate and collect the new states in
+            //the StatesWaitToExpand list
+            foreach (Action CurAction in this.ApplicableActionSet)
             {
-                this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
-                temp = CurAction.ExecuteAction(StartState);
-                Microsoft.Msagl.Drawing.Node ChildNode = new Microsoft.Msagl.Drawing.Node(temp.printEnumState());
-                
-                NewStateList.Add(temp);
-                graph.AddNode(ChildNode);
-                graph.AddEdge(StartNode.Id, CurAction.Name, ChildNode.Id);
+                //Create the new state
+                StateSpace CurState = CurAction.ExecuteAction(StartState);
+                // save the new state in the StatesWaitToExpand list
+                this.StatesWaitingToExpand.Add(CurState);
+                // Add a new node to the graph
+                Microsoft.Msagl.Drawing.Node CurNode = new Microsoft.Msagl.Drawing.Node(CurState.printEnumState());
+                this.graph.AddNode(CurNode);
+                // Add a edge ( and the nodes ) to the graph
+                this.graph.AddEdge(StartNode.Id, CurAction.Name, CurNode.Id);
 
             }
-            this.Refresh();         
-                     
 
+            //Check if there is a new state in the stateswaittoexpandd list which meets the target state
+            List<StateSpace> Targets = Helper.IsTargetState(this.StatesWaitingToExpand, TargetState);
+
+            if(Targets.Count < 0)
+                foreach(StateSpace CurTarget in Targets)
+                {
+                    Microsoft.Msagl.Drawing.Node c = graph.FindNode(CurTarget.printEnumState());
+                    c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+                }
+               
+            // freeze the form logic
+            Graphform.SuspendLayout();
+            this.tabControl1.SuspendLayout();
             //bind the graph to the viewer 
             viewer.Graph = graph;
-            //associate the viewer with the form 
-            Graphform.SuspendLayout();
+            // add the Form control to the tabcontroler
+            this.tabControl1.TabPages[0].Controls.Add(viewer);
+            // doch the viewer with max size to the tabpage
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Controls.Add(viewer);
-            this.panel1.Controls.Add(viewer);
-            this.panel1.ResumeLayout();
-            this.panel1.Refresh();
+            // de-freeze the form logic
+            Graphform.ResumeLayout();
+            this.tabControl1.TabPages[0].ResumeLayout();
+            // refresh all visual things
+            this.Refresh();
             
 
         }
