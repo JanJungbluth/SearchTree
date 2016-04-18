@@ -13,6 +13,8 @@ namespace SearchTree
         private int ID;
         private static int IDC = 0;
         private int HAPPINESS = 0;
+        private int PARENT_ID;
+        private bool DONOTKILLME = false;
         private int DEPTH;
         private int STATE_SPACE_DIMENSION; // Get the Dimension of the statespace
         private int[] STATES_SIZE_VEC; // Get for each Dimension the number of possible states
@@ -21,9 +23,12 @@ namespace SearchTree
         // Constructor teste
         public StateSpace(StateSpace state)
         {
+            // a copy, copies everthing
             this.ID = state.ID;
             this.HAPPINESS = state.HAPPINESS;
             this.DEPTH = state.DEPTH;
+            this.PARENT_ID = state.PARENT_ID;
+            this.DONOTKILLME = state.DONOTKILLME;
             this.STATE_SPACE_DIMENSION = state.STATE_SPACE_DIMENSION;
             this.STATES_SIZE_VEC = state.STATES_SIZE_VEC;
             this.STATE_VEC = new int[this.STATE_SPACE_DIMENSION];
@@ -33,10 +38,14 @@ namespace SearchTree
                 this.STATE_VEC[i++] = Value;
             }
         }
-        public StateSpace(int Depth, int Dimension, int[] StateSizeVec)
+        public StateSpace(int Depth, int ParentId, int Dimension, int[] StateSizeVec)
         {
             //Set the id
             this.ID = StateSpace.IDC++;
+            // set the depth
+            this.DEPTH = Depth;
+            // set the Parent ID
+            this.PARENT_ID = ParentId;
             // Get the dimension
             this.STATE_SPACE_DIMENSION = Dimension;
             // Get the number of states for each dimension
@@ -44,10 +53,14 @@ namespace SearchTree
             // Create the state vector
             this.STATE_VEC = new int[this.STATE_SPACE_DIMENSION];
         }
-        public StateSpace(int Depth, int Dimension, int[] StateSizeVec, int[] StateVec)
+        public StateSpace(int Depth, int ParentId, int Dimension, int[] StateSizeVec, int[] StateVec)
         {
             //Set the id
             this.ID = StateSpace.IDC++;
+            // set the depth
+            this.DEPTH = Depth;
+            // set the Parent ID
+            this.PARENT_ID = ParentId;
             // Get the dimension
             this.STATE_SPACE_DIMENSION = Dimension;
             // Get the number of states for each dimension
@@ -60,6 +73,16 @@ namespace SearchTree
             {
                 this.STATE_VEC[i++] = Value;
             }
+        }
+        public int ParentId
+        {
+            get { return this.PARENT_ID; }
+            set { this.PARENT_ID = value; }
+        }
+        public bool DontKillMe
+        {
+            get { return this.DONOTKILLME; }
+            set { this.DONOTKILLME = value; }
         }
         public int Happiness
         {

@@ -21,6 +21,8 @@ namespace SearchTree
         Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
         //create a graph object 
         Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+        //create a list with all states 
+        private List<StateSpace> AllStates = new List<StateSpace>();
         //create a list with all states which have to expand in the next step
         private List<StateSpace> StatesWaitingToExpand = new List<StateSpace>();
         //create a list with all possible actions
@@ -42,23 +44,7 @@ namespace SearchTree
                 + Environment.NewLine);
             List<StateSpace> Temp = new List<StateSpace>(this.StatesWaitingToExpand);
 
-            if( this.DepthCounter % 5 == 0)
-            {
-                List<StateSpace> SadStateList = Helper.KillSadStates(this.StatesWaitingToExpand, this.DepthCounter);
-                foreach(StateSpace CurSadState in SadStateList)
-                {
-                    this.StatesWaitingToExpand.Remove(CurSadState);
-                    Microsoft.Msagl.Drawing.Node CurSadNode = graph.FindNode(CurSadState.printEnumState());
-                    graph.RemoveNode(CurSadNode);
-                }
-
-
-                // Show that the sad states was killed in the textbox
-                this.textBox1.AppendText(Environment.NewLine
-                    + String.Format("Sad states was killed at step {0} ", this.DepthCounter++)
-                    + Environment.NewLine);
-                
-            }
+            
             
             // Now we have to expand each state in the StatesWaitToExpand List and expand them
             foreach (StateSpace CurState in Temp)
@@ -88,7 +74,11 @@ namespace SearchTree
                 }
                 
             }
-
+            // copy all states into the 
+            foreach(StateSpace CurState in this.StatesWaitingToExpand)
+            {
+                this.AllStates.Add(new StateSpace(CurState));
+            }
             // freeze the form logic
             Graphform.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -109,6 +99,9 @@ namespace SearchTree
         {
             // The first step is to generate the target and start state
             StateSpace StartState = Helper.createStartState();
+            //Add the first state to the AllStates list
+            this.AllStates.Add(StartState);
+            //Generate the target
             StateSpace TargetState = Helper.createTargetState();
             // We print them both to the textbox
             this.textBox1.AppendText("StartState: " + StartState.printEnumState()+Environment.NewLine);
@@ -138,9 +131,10 @@ namespace SearchTree
             {
                 //Create the new state
                 StateSpace CurState = CurAction.ExecuteAction(StartState);
-                CurState.Depth = this.DepthCounter;
                 // save the new state in the StatesWaitToExpand list
                 this.StatesWaitingToExpand.Add(new StateSpace (CurState));
+                // save the new state in the AllStates list
+                this.AllStates.Add(new StateSpace(CurState));
                 // Add a new node to the graph
                 Microsoft.Msagl.Drawing.Node CurNode = new Microsoft.Msagl.Drawing.Node(CurState.printEnumState());
                 this.graph.AddNode(CurNode);
@@ -148,6 +142,8 @@ namespace SearchTree
                 this.graph.AddEdge(StartNode.Id, CurAction.Name, CurNode.Id);
 
             }
+            
+            
 
             //Check if there is a new state in the stateswaittoexpandd list which meets the target state
             List<StateSpace> Targets = Helper.IsTargetState(this.StatesWaitingToExpand, TargetState);

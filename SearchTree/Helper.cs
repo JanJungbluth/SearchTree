@@ -51,7 +51,7 @@ namespace SearchTree
         {
             const int StateSpaceDim = 14;
 
-            StateSpace StartState = new StateSpace(0,StateSpaceDim, new int[] { 4, 9, 2, 2, 2, 2, 2, 5, 2, 5, 4, 6, 6, 6 });
+            StateSpace StartState = new StateSpace(0,0,StateSpaceDim, new int[] { 4, 9, 2, 2, 2, 2, 2, 5, 2, 5, 4, 6, 6, 6 });
 
             StartState.StateVec = new int[]{ (int)TagsRobot.EMPTY, (int)TagsRobot.AT_HOME_POS,
                                              (int)TagsHuman.KNOW_TASK,(int)TagsHuman.KNOW_SCREW,(int)TagsHuman.KNOW_TOOL,(int)TagsHuman.KNOW_ASSISTANCE,
@@ -63,7 +63,7 @@ namespace SearchTree
         {
             const int StateSpaceDim = 14;
 
-            StateSpace TargetState = new StateSpace(0,StateSpaceDim, new int[] { 4, 9, 2, 2, 2, 2, 2, 5, 2, 5, 4, 6, 6, 6 });
+            StateSpace TargetState = new StateSpace(0,0,StateSpaceDim, new int[] { 4, 9, 2, 2, 2, 2, 2, 5, 2, 5, 4, 6, 6, 6 });
             TargetState.StateVec = new int[]{(int)TagsRobot.EMPTY, (int)TagsRobot.AT_HOME_POS,
                                              (int)TagsHuman.KNOW_TASK,(int)TagsHuman.KNOW_SCREW,(int)TagsHuman.KNOW_TOOL,(int)TagsHuman.KNOW_ASSISTANCE,
                                              (int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,(int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,
@@ -130,7 +130,7 @@ namespace SearchTree
                 new int[] { (int)TagsRobot.HAS_GRIPPER });
             Action TAKE_SCREWDRIVER = new Action("TAKE_SCREWDRIVER", 1,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition },
-                new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_SCREWDRIVER_MAGAZIN_POS },
+                new int[] { (int)TagsRobot.EMPTY, (int)TagsRobot.AT_SCREWDRIVER_MAGAZIN_POS },
                 new int[] { (int)TagsDim.RobotEffector },
                 new int[] { (int)TagsRobot.HAS_SCRWEDRIVER });
             Action TAKE_TOOL = new Action("TAKE_TOOL", 1,
@@ -331,13 +331,19 @@ namespace SearchTree
         {
             //define minimum happiness for that level
             double MinHappiness = 0.2 * StepSize;
+            // Create a new reverse ordered state list
+            List<StateSpace> ReverseOrderedSet = new List<StateSpace>();
+            // sort  by depth of the nodes
+            ReverseOrderedSet = StateList.OrderBy(o => o.Depth).ToList<StateSpace>();
+            // reverse the list
+            ReverseOrderedSet.Reverse();
             // Create a new state set which contains only the sad states
             List<StateSpace> SadSet = new List<StateSpace>();
             // go thru the states in the list
-            foreach (StateSpace CurState in StateList)
+            foreach (StateSpace CurState in ReverseOrderedSet)
             {
-                // Check if the state is sad in that level
-                if (CurState.Happiness <= MinHappiness)
+                // Check if the state is happy in that level
+                if (CurState.Happiness <= MinHappiness || CurState.DontKillMe)
                 {
                     // if it is, then add the action to the sad state list
                     SadSet.Add(CurState);

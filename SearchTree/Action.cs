@@ -75,7 +75,9 @@ namespace SearchTree
         }
         public StateSpace ExecuteAction(StateSpace MyState)
         {
-            StateSpace NewState = new StateSpace(MyState.Depth,MyState.DimensionSize,MyState.StateVec);
+            // create a new state with the depth of the parent plus 1 
+            StateSpace NewState = new StateSpace(MyState.Depth + 1, MyState.getId, MyState.DimensionSize, MyState.StatesSizeVec, MyState.StateVec);
+            // add the happiness gained by this action to the state
             NewState.Happiness = MyState.Happiness + this.HAPPINESS;
             // An action is executed by this function an it will change the state
             int i = 0;

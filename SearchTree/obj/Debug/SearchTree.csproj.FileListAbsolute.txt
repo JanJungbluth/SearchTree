@@ -25,4 +25,3 @@ C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.Prope
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csproj.GenerateResource.Cache
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.exe
 C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.pdb
-C:\Users\JanJungbluth\Documents\SearchTree\SearchTree\obj\Debug\SearchTree.csprojResolveAssemblyReference.cache
