@@ -10,19 +10,66 @@ namespace SearchTree
 
     public class StateSpace
     {
+        private int ID;
+        private static int IDC = 0;
+        private int HAPPINESS = 0;
+        private int DEPTH;
         private int STATE_SPACE_DIMENSION; // Get the Dimension of the statespace
         private int[] STATES_SIZE_VEC; // Get for each Dimension the number of possible states
         private int[] STATE_VEC; // This ist the state vector
 
         // Constructor teste
-        public StateSpace(int Dimension, int[] StateSizeVec)
+        public StateSpace(StateSpace state)
         {
+            this.ID = state.ID;
+            this.HAPPINESS = state.HAPPINESS;
+            this.DEPTH = state.DEPTH;
+            this.STATE_SPACE_DIMENSION = state.STATE_SPACE_DIMENSION;
+            this.STATES_SIZE_VEC = state.STATES_SIZE_VEC;
+            this.STATE_VEC = new int[this.STATE_SPACE_DIMENSION];
+            int i = 0;
+            foreach( int Value in state.STATE_VEC)
+            {
+                this.STATE_VEC[i++] = Value;
+            }
+        }
+        public StateSpace(int Depth, int Dimension, int[] StateSizeVec)
+        {
+            //Set the id
+            this.ID = StateSpace.IDC++;
             // Get the dimension
             this.STATE_SPACE_DIMENSION = Dimension;
             // Get the number of states for each dimension
             this.STATES_SIZE_VEC = StateSizeVec;
             // Create the state vector
             this.STATE_VEC = new int[this.STATE_SPACE_DIMENSION];
+        }
+        public StateSpace(int Depth, int Dimension, int[] StateSizeVec, int[] StateVec)
+        {
+            //Set the id
+            this.ID = StateSpace.IDC++;
+            // Get the dimension
+            this.STATE_SPACE_DIMENSION = Dimension;
+            // Get the number of states for each dimension
+            this.STATES_SIZE_VEC = StateSizeVec;
+            // Create the state vector
+            this.STATE_VEC = new int[this.STATE_SPACE_DIMENSION];
+            //Fill the state vector
+            int i = 0;
+            foreach(int Value in StateVec)
+            {
+                this.STATE_VEC[i++] = Value;
+            }
+        }
+        public int Happiness
+        {
+            get { return this.HAPPINESS; }
+            set { this.HAPPINESS = this.HAPPINESS + value; }
+        }
+        public int Depth
+        {
+            get { return this.DEPTH; }
+            set { this.DEPTH = value; }
         }
         public int DimensionSize
         {
@@ -31,6 +78,10 @@ namespace SearchTree
         public int[] StatesSizeVec
         {
             get { return this.STATES_SIZE_VEC; }
+        }
+        public int getId
+        {
+            get { return this.ID; }
         }
         public int StateSize(int Dimension)
         {
@@ -115,7 +166,9 @@ namespace SearchTree
                                 new String[] { "AT_TOOL_MAGAZINE_POS", "AT_LEFT_HAND_POS", "AT_RIGHT_HAND_POS", "AT_GRIPPER", "AT_HUMAN_LEFT_HAND", "AT_HUMAN_RIGHT_HAND" },
                                 new String[] { "AT_BOX_MAGAZINE_POS", "AT_LEFT_HAND_POS", "AT_RIGHT_HAND_POS", "AT_GRIPPER", "AT_HUMAN_LEFT_HAND","AT_HUMAN_RIGHT_HAND" } };
 
-            StringBuilder MySB = new StringBuilder("StateVec:" + Environment.NewLine);
+            String FirstLine = String.Format("State ID: {0}", this.ID);
+            
+            StringBuilder MySB = new StringBuilder(FirstLine + Environment.NewLine);
             int i = 0;
             foreach (int Value in this.STATE_VEC)
                     MySB.AppendLine(Dim[i++][Value]);            

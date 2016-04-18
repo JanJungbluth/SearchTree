@@ -14,7 +14,7 @@ namespace SearchTree
 {
     public partial class Form1 : Form
     {
-        private int StepCounter = 0;
+        private int DepthCounter = 1;
         //create a new form for the viewer
         System.Windows.Forms.Form Graphform = new System.Windows.Forms.Form();
         //create a viewer object 
@@ -38,12 +38,30 @@ namespace SearchTree
         {
             // Show a new iteration step in the textbox
             this.textBox1.AppendText(Environment.NewLine
-                + String.Format("-------- Stepnumber {0} ------- ",this.StepCounter++ )
+                + String.Format("-------- Stepnumber {0} ------- ",this.DepthCounter++ )
                 + Environment.NewLine);
             List<StateSpace> Temp = new List<StateSpace>(this.StatesWaitingToExpand);
+
+            if( this.DepthCounter % 5 == 0)
+            {
+                List<StateSpace> SadStateList = Helper.KillSadStates(this.StatesWaitingToExpand, this.DepthCounter);
+                foreach(StateSpace CurSadState in SadStateList)
+                {
+                    this.StatesWaitingToExpand.Remove(CurSadState);
+                    Microsoft.Msagl.Drawing.Node CurSadNode = graph.FindNode(CurSadState.printEnumState());
+                    graph.RemoveNode(CurSadNode);
+                }
+
+
+                // Show that the sad states was killed in the textbox
+                this.textBox1.AppendText(Environment.NewLine
+                    + String.Format("Sad states was killed at step {0} ", this.DepthCounter++)
+                    + Environment.NewLine);
+                
+            }
             
             // Now we have to expand each state in the StatesWaitToExpand List and expand them
-            foreach(StateSpace CurState in Temp)
+            foreach (StateSpace CurState in Temp)
             {
                 // create the new applicable action list ...
                 this.ApplicableActionSet = Helper.PossibleActionSet(this.FullActionSet, CurState);
@@ -57,7 +75,7 @@ namespace SearchTree
                     //Create the new state
                     StateSpace NewState = CurAction.ExecuteAction(CurState);
                     // save the new state in the StatesWaitToExpand list
-                    this.StatesWaitingToExpand.Add(NewState);
+                    this.StatesWaitingToExpand.Add(new StateSpace(NewState));
                     //Get the CurState Node
                     Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
                     // Add a new node to the graph
@@ -120,8 +138,9 @@ namespace SearchTree
             {
                 //Create the new state
                 StateSpace CurState = CurAction.ExecuteAction(StartState);
+                CurState.Depth = this.DepthCounter;
                 // save the new state in the StatesWaitToExpand list
-                this.StatesWaitingToExpand.Add(CurState);
+                this.StatesWaitingToExpand.Add(new StateSpace (CurState));
                 // Add a new node to the graph
                 Microsoft.Msagl.Drawing.Node CurNode = new Microsoft.Msagl.Drawing.Node(CurState.printEnumState());
                 this.graph.AddNode(CurNode);

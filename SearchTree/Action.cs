@@ -25,13 +25,13 @@ namespace SearchTree
     public class Action
     {
         private String NAME;
-        private int COST;
+        private int HAPPINESS;
         private int[] PRE_DIMENSIONS; // Dimensions with preconditions
         private int[] PRECONDITIONS; // Preconditions for that dimension
         private int[] TRA_DIMENSIONS; // Dimensions with transmisions
         private int[] TRANSITIONS; // transition of the coresponding dimension
 
-        public Action(string Name, int[] PreDimension, int[] Preconditions, int[] TraDimensions, int[] Transitions)
+        public Action(string Name, int Happiness, int[] PreDimension, int[] Preconditions, int[] TraDimensions, int[] Transitions)
         {
             
             this.NAME = Name;
@@ -39,12 +39,12 @@ namespace SearchTree
             this.PRECONDITIONS = Preconditions;
             this.TRA_DIMENSIONS = TraDimensions;
             this.TRANSITIONS = Transitions;
-            this.COST = 0; // #TODO use the costs!!!   
+            this.HAPPINESS = Happiness; // #TODO use the costs!!!   
         }
-        public int Cost
+        public int Happiness
         {
-            get { return this.COST; }
-            set { this.COST = value; }
+            get { return this.HAPPINESS; }
+            set { this.HAPPINESS = value; }
         }
         public bool CheckPrecondition(StateSpace MyState)
         {
@@ -75,16 +75,17 @@ namespace SearchTree
         }
         public StateSpace ExecuteAction(StateSpace MyState)
         {
-            StateSpace NewState = new StateSpace(MyState.DimensionSize,MyState.StatesSizeVec);
+            StateSpace NewState = new StateSpace(MyState.Depth,MyState.DimensionSize,MyState.StateVec);
+            NewState.Happiness = MyState.Happiness + this.HAPPINESS;
             // An action is executed by this function an it will change the state
             int i = 0;
             //Go thru all transmission dimension 
             foreach(int TraDim in this.TRA_DIMENSIONS)
             {
                 // for each ellement in Tra_Dimension there is one transition
-                MyState.setStateValue(TraDim, this.TRANSITIONS[i++]);                                
+                NewState.setStateValue(TraDim, this.TRANSITIONS[i++]);                                
             }
-            NewState = MyState;
+            
             return NewState;
         }
         public String Name
