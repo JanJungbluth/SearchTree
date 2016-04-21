@@ -123,22 +123,22 @@ namespace SearchTree
             #endregion
 
             #region  Take Statements
-            Action TAKE_GRIPPER = new Action("TAKE_GRIPPER", 50,
+            Action TAKE_GRIPPER = new Action("TAKE_GRIPPER", 5,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition },
                 new int[] { (int)TagsRobot.EMPTY, (int)TagsRobot.AT_GRIPPER_MAGAZINE_POS },
                 new int[] { (int)TagsDim.RobotEffector },
                 new int[] { (int)TagsRobot.HAS_GRIPPER });
-            Action TAKE_SCREWDRIVER = new Action("TAKE_SCREWDRIVER", 50,
+            Action TAKE_SCREWDRIVER = new Action("TAKE_SCREWDRIVER", 5,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition },
                 new int[] { (int)TagsRobot.EMPTY, (int)TagsRobot.AT_SCREWDRIVER_MAGAZIN_POS },
                 new int[] { (int)TagsDim.RobotEffector },
                 new int[] { (int)TagsRobot.HAS_SCRWEDRIVER });
-            Action TAKE_TOOL = new Action("TAKE_TOOL", 50,
+            Action TAKE_TOOL = new Action("TAKE_TOOL", 5,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_TOOL_MAGAZINE_POS, (int)TagsTool.AT_TOOL_MAGAZINE_POS },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsTool.AT_GRIPPER });
-            Action TAKE_BOX = new Action("TAKE_BOX", 50,
+            Action TAKE_BOX = new Action("TAKE_BOX", 5,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_BOX_MAGAZIN_POS, (int)TagsBox.AT_BOX_MAGAZINE_POS },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.BoxPosition },
@@ -146,17 +146,17 @@ namespace SearchTree
             #endregion
 
             #region Put Back Statements
-            Action PUT_BACK_GRIPPER = new Action("PUT_BACK_GRIPPER", 100,
+            Action PUT_BACK_GRIPPER = new Action("PUT_BACK_GRIPPER", 10,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_GRIPPER_MAGAZINE_POS },
                 new int[] { (int)TagsDim.RobotEffector },
                 new int[] { (int)TagsRobot.EMPTY });
-            Action PUT_BACK_SCREWDRIVER = new Action("PUT_BACK_SCREWDRIVER", 100,
+            Action PUT_BACK_SCREWDRIVER = new Action("PUT_BACK_SCREWDRIVER", 10,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition },
                 new int[] { (int)TagsRobot.HAS_SCRWEDRIVER, (int)TagsRobot.AT_SCREWDRIVER_MAGAZIN_POS },
                 new int[] { (int)TagsDim.RobotEffector },
                 new int[] { (int)TagsRobot.EMPTY });
-            Action PUT_BACK_TOOL = new Action("PUT_BACK_TOOL", 100,
+            Action PUT_BACK_TOOL = new Action("PUT_BACK_TOOL", 10,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_TOOL_MAGAZINE_POS, (int)TagsTool.AT_GRIPPER },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.ToolPosition },
@@ -166,7 +166,7 @@ namespace SearchTree
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_BOX_MAGAZIN_POS, (int)TagsBox.AT_GRIPPER },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsBox.AT_BOX_MAGAZINE_POS });
-            Action PUT_SCREW_IN_BOX = new Action("PUT_SCREW_IN_BOX", 100,
+            Action PUT_SCREW_IN_BOX = new Action("PUT_SCREW_IN_BOX", 10,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_BOX_MAGAZIN_POS, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_GRIPPER },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.ScrewPosition },
@@ -174,22 +174,22 @@ namespace SearchTree
             #endregion
 
             #region HAND Statements
-            Action HAND_TOOL_LEFT = new Action("HAND_TOOL_LEFT", 200,
+            Action HAND_TOOL_LEFT = new Action("HAND_TOOL_LEFT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.EMPTY, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsTool.AT_GRIPPER },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsHuman.HAS_OBJECT, (int)TagsTool.AT_HUMAN_LEFT_HAND });
-            Action HAND_TOOL_RIGHT = new Action("HAND_TOOL_RIGHT", 200,
+            Action HAND_TOOL_RIGHT = new Action("HAND_TOOL_RIGHT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.EMPTY, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsTool.AT_GRIPPER },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsHuman.HAS_OBJECT, (int)TagsTool.AT_HUMAN_RIGHT_HAND });
-            Action HAND_BOX_LEFT = new Action("HAND_BOX_LEFT", 200,
+            Action HAND_BOX_LEFT = new Action("HAND_BOX_LEFT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.EMPTY, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsBox.AT_GRIPPER },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsHuman.HAS_OBJECT, (int)TagsBox.AT_HUMAN_LEFT_HAND });
-            Action HAND_BOX_RIGHT = new Action("HAND_BOX_RIGHT", 200,
+            Action HAND_BOX_RIGHT = new Action("HAND_BOX_RIGHT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.EMPTY, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsBox.AT_GRIPPER },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.BoxPosition },
@@ -197,22 +197,22 @@ namespace SearchTree
             #endregion
 
             #region Return Statements
-            Action RETURN_TOOL_LEFT = new Action("RETURN_TOOL_LEFT", 200,
+            Action RETURN_TOOL_LEFT = new Action("RETURN_TOOL_LEFT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsTool.AT_HUMAN_LEFT_HAND },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsHuman.EMPTY, (int)TagsTool.AT_GRIPPER });
-            Action RETURN_TOOL_RIGHT = new Action("RETURN_TOOL_RIGHT", 200,
+            Action RETURN_TOOL_RIGHT = new Action("RETURN_TOOL_RIGHT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsTool.AT_HUMAN_RIGHT_HAND },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.ToolPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsHuman.EMPTY, (int)TagsTool.AT_GRIPPER });
-            Action RETURN_BOX_LEFT = new Action("RETURN_BOX_LEFT", 200,
+            Action RETURN_BOX_LEFT = new Action("RETURN_BOX_LEFT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsBox.AT_HUMAN_LEFT_HAND },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsHuman.EMPTY, (int)TagsBox.AT_GRIPPER });
-            Action RETURN_BOX_RIGHT = new Action("RETURN_BOX_RIGHT", 200,
+            Action RETURN_BOX_RIGHT = new Action("RETURN_BOX_RIGHT", 20,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.BoxPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsBox.AT_HUMAN_RIGHT_HAND },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.BoxPosition },
@@ -220,22 +220,22 @@ namespace SearchTree
             #endregion
 
             #region Loose Joint Statements
-            Action LOOSE_SCREW = new Action("LOOSE_SCREW", 300,
+            Action LOOSE_SCREW = new Action("LOOSE_SCREW", 30,
                 new int[] { (int)TagsDim.RobotEffector,     (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.HAS_SCRWEDRIVER, (int)TagsRobot.AT_SCREW_POS, (int)TagsScrew.TIGHTENED, (int)TagsScrew.AT_SCREW_POS },
                 new int[] { (int)TagsDim.Screw },
                 new int[] { (int)TagsScrew.LOOSE });
-            Action LOOSE_SCREW_FULLY = new Action("LOOSE_SCREW_FULLY", 400,
+            Action LOOSE_SCREW_FULLY = new Action("LOOSE_SCREW_FULLY", 40,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.HAS_SCRWEDRIVER, (int)TagsRobot.AT_SCREW_POS, (int)TagsScrew.LOOSE, (int)TagsScrew.AT_SCREW_POS },
                 new int[] { (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.AT_FULLY_LOOSE_SCREW_POS, (int)TagsScrew.FULLY_LOOSE, (int)TagsScrew.AT_FULLY_LOOSE_SCREW_POS });
-            Action REMOVE_SCREW = new Action("REMOVE_SCREW", 300,
+            Action REMOVE_SCREW = new Action("REMOVE_SCREW", 30,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_FULLY_LOOSE_SCREW_POS, (int)TagsScrew.FULLY_LOOSE, (int)TagsHuman.AT_FULLY_LOOSE_SCREW_POS },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_GRIPPER });
-            Action LOOSE_AND_REMOVE_SCREW = new Action("LOOSE_AND_REMOVE_SCREW", 500,
+            Action LOOSE_AND_REMOVE_SCREW = new Action("LOOSE_AND_REMOVE_SCREW", 50,
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
                 new int[] { (int)TagsRobot.HAS_SCRWEDRIVER, (int)TagsRobot.AT_SCREW_POS, (int)TagsScrew.TIGHTENED, (int)TagsHuman.AT_SCREW_POS },
                 new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },

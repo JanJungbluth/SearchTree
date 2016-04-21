@@ -75,7 +75,7 @@ namespace SearchTree
                         Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
                         // Add a new node to the graph
                         Microsoft.Msagl.Drawing.Node NewNode = new Microsoft.Msagl.Drawing.Node(NewState.printEnumState());
-                        NewNode.Attr.FillColor = new Microsoft.Msagl.Drawing.Color((byte)NewState.Happiness,0,0);
+                        //NewNode.Attr.FillColor = new Microsoft.Msagl.Drawing.Color((byte)(NewState.Depth*10), (byte)(NewState.Depth * 10), (byte)(NewState.Depth * 10));
                         this.graph.AddNode(NewNode);
                         // Add a edge to the graph
                         this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
@@ -237,9 +237,11 @@ namespace SearchTree
             // freeze the form logic
             Graphform.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            // change the graph layout method
+            this.graph.LayoutAlgorithmSettings = new Microsoft.Msagl.Layout.MDS.MdsLayoutSettings();
             //bind the graph to the viewer 
+            viewer.CurrentLayoutMethod = Microsoft.Msagl.GraphViewerGdi.LayoutMethod.UseSettingsOfTheGraph;
             viewer.Graph = graph;
-            viewer.l
             // add the Form control to the tabcontroler
             this.tabControl1.TabPages[0].Controls.Add(viewer);
             // doch the viewer with max size to the tabpage
