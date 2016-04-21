@@ -14,6 +14,7 @@ namespace SearchTree
 {
     public partial class Form1 : Form
     {
+        #region Global Definitions
         private int DepthCounter = 1;
         //create a new form for the viewer
         System.Windows.Forms.Form Graphform = new System.Windows.Forms.Form();
@@ -29,6 +30,7 @@ namespace SearchTree
         private List<Action> FullActionSet = new List<Action>();
         //create a list for all applicable actions in a given state
         private List<Action> ApplicableActionSet = new List<Action>();
+        #endregion
 
         public Form1()
         {
@@ -38,39 +40,78 @@ namespace SearchTree
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Show a new iteration step in the textbox
+            #region Some text output
+            // Show a new iteration step in the textbox1
             this.textBox1.AppendText(Environment.NewLine
                 + String.Format("-------- Stepnumber {0} ------- ",this.DepthCounter++ )
                 + Environment.NewLine);
-            List<StateSpace> Temp = new List<StateSpace>(this.StatesWaitingToExpand);
+            // Show the iteration setp in the textbox 2
+            this.textBox2.Text = this.DepthCounter.ToString();
+            this.textBox2.Refresh();
+            // Show the number of nodes that exists
+            this.textBox3.Text = this.AllStates.Count.ToString();
+            this.textBox3.Refresh();
+            //Show the number of nodes which are waiting to expan
+            this.textBox4.Text = this.StatesWaitingToExpand.Count.ToString();
+            this.textBox3.Refresh();
+            this.Refresh();
+            #endregion
 
-            
-            
+            //copy the StateWaitToExpand list to manipulate the list not in the foreach loop
+            List<StateSpace> Temp = new List<StateSpace>(this.StatesWaitingToExpand);
             // Now we have to expand each state in the StatesWaitToExpand List and expand them
             foreach (StateSpace CurState in Temp)
             {
                 // create the new applicable action list ...
                 this.ApplicableActionSet = Helper.PossibleActionSet(this.FullActionSet, CurState);
+                #region more text output
                 // ..and print them to the textbox
                 this.textBox1.AppendText(Environment.NewLine + "Applicable Action List" + Environment.NewLine);
                 foreach (Action CurAction in this.ApplicableActionSet)
                     this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
+                #endregion
 
                 foreach (Action CurAction in this.ApplicableActionSet)
                 {
                     //Create the new state
                     StateSpace NewState = CurAction.ExecuteAction(CurState);
-                    // save the new state in the StatesWaitToExpand list
-                    this.StatesWaitingToExpand.Add(new StateSpace(NewState));
-                    //Get the CurState Node
-                    Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
-                    // Add a new node to the graph
-                    Microsoft.Msagl.Drawing.Node NewNode = new Microsoft.Msagl.Drawing.Node(NewState.printEnumState());
-                    this.graph.AddNode(NewNode);
-                    // Add a edge ( and the nodes ) to the graph
-                    this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
-                    //Remove the old state
-                    this.StatesWaitingToExpand.Remove(CurState);
+                    // check if the action returns a state that is not in the Allstates list 
+                    if (Helper.IsTargetState(this.AllStates,NewState).Count == 0)
+                    {
+                        // when there is not that state in the list, then create a new state and add them to the list
+                        // save the new state in the StatesWaitToExpand list
+                        this.StatesWaitingToExpand.Add(new StateSpace(NewState));
+                        // save the new state in the AllStates list
+                        this.AllStates.Add(new StateSpace(CurState));
+                        //Get the CurState Node
+                        Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
+                        // Add a new node to the graph
+                        Microsoft.Msagl.Drawing.Node NewNode = new Microsoft.Msagl.Drawing.Node(NewState.printEnumState());
+                        this.graph.AddNode(NewNode);
+                        // Add a edge to the graph
+                        this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
+                        //Remove the curent state from the StatewaitToExpand list
+                        this.StatesWaitingToExpand.Remove(CurState);
+                    }
+                    // Check if the arc between CurState and NewState exists in the graph
+                    else
+                    {
+                        //get the state form the Allstates list 
+                        StateSpace OldState = Helper.GetEqualState(this.AllStates, NewState);
+                        //Get the CurState Node
+                        Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
+                        //Get the NewState Node
+                        Microsoft.Msagl.Drawing.Node NewNode = graph.FindNode(OldState.printEnumState());
+                        //Create a temporary edge to check if it exist already
+                        Microsoft.Msagl.Drawing.Edge TempEdge = new Microsoft.Msagl.Drawing.Edge(CurNode.Id, CurAction.Name, NewNode.Id);
+                        if (!this.graph.Edges.Contains<Microsoft.Msagl.Drawing.Edge>(TempEdge))
+                        {
+                            //Add the arc between them
+                            this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
+                        }
+                        
+                    }
+                    
                 }
                 
             }
@@ -123,7 +164,6 @@ namespace SearchTree
 
             //create the root node for the graph
             Microsoft.Msagl.Drawing.Node StartNode = new Microsoft.Msagl.Drawing.Node(StartState.printEnumState());
-            
             this.graph.AddNode(StartNode);
             // Next we execute the applicable actions to the startstate and collect the new states in
             //the StatesWaitToExpand list
@@ -131,23 +171,23 @@ namespace SearchTree
             {
                 //Create the new state
                 StateSpace CurState = CurAction.ExecuteAction(StartState);
-                // save the new state in the StatesWaitToExpand list
-                this.StatesWaitingToExpand.Add(new StateSpace (CurState));
-                // save the new state in the AllStates list
-                this.AllStates.Add(new StateSpace(CurState));
-                // Add a new node to the graph
-                Microsoft.Msagl.Drawing.Node CurNode = new Microsoft.Msagl.Drawing.Node(CurState.printEnumState());
-                this.graph.AddNode(CurNode);
-                // Add a edge ( and the nodes ) to the graph
-                this.graph.AddEdge(StartNode.Id, CurAction.Name, CurNode.Id);
-
+                // check if the action returns the same state as the tempstate
+                if(!CurState.isTargetState(StartState))
+                {
+                    // save the new state in the StatesWaitToExpand list
+                    this.StatesWaitingToExpand.Add(new StateSpace(CurState));
+                    // save the new state in the AllStates list
+                    this.AllStates.Add(new StateSpace(CurState));
+                    // Add a new node to the graph
+                    Microsoft.Msagl.Drawing.Node CurNode = new Microsoft.Msagl.Drawing.Node(CurState.printEnumState());
+                    this.graph.AddNode(CurNode);
+                    // Add a edge ( and the nodes ) to the graph
+                    this.graph.AddEdge(StartNode.Id, CurAction.Name, CurNode.Id);
+                }
             }
-            
-            
 
             //Check if there is a new state in the stateswaittoexpandd list which meets the target state
             List<StateSpace> Targets = Helper.IsTargetState(this.StatesWaitingToExpand, TargetState);
-
             if(Targets.Count < 0)
                 foreach(StateSpace CurTarget in Targets)
                 {

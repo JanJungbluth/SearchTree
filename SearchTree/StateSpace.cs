@@ -119,14 +119,14 @@ namespace SearchTree
         {
             this.STATE_VEC[Dimension] = StateValue;
         }
-        public bool isTargetState(StateSpace CurState, StateSpace Target)
+        public bool isTargetState( StateSpace Target)
         {
             // This function checks if the current State is the target state
             bool IsTarget = true; // If true it is the target state
 
             int i = 0;// Indexer
             // Go thru alls dimensions and check current against target statevalue 
-            foreach (int CurValue in CurState.StateVec)
+            foreach (int CurValue in this.StateVec)
             {
                 if (CurValue != Target.StateVec[i++])
                 {

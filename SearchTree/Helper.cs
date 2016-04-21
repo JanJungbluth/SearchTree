@@ -357,13 +357,23 @@ namespace SearchTree
             List<StateSpace> IsTargetState = new List<StateSpace>();
             foreach(StateSpace CurState in StatesWaitToExpand)
             {
-                if(CurState == TargetState)
+                if(CurState.isTargetState(TargetState))
                 {
                     IsTargetState.Add(CurState);
                 }
             }
             return IsTargetState;
         }
-        
+        public static StateSpace GetEqualState(List<StateSpace> StateSpaceList, StateSpace EqualState)
+        {
+            foreach (StateSpace CurState in StateSpaceList)
+            {
+                if (CurState.isTargetState(EqualState))
+                {
+                    return CurState;
+                }
+            }
+            return null;
+        }
     }
 }
