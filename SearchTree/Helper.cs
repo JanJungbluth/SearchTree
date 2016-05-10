@@ -64,10 +64,10 @@ namespace SearchTree
             const int StateSpaceDim = 14;
 
             StateSpace TargetState = new StateSpace(0,0,StateSpaceDim, new int[] { 4, 9, 2, 2, 2, 2, 2, 5, 2, 5, 4, 6, 6, 6 });
-            TargetState.StateVec = new int[]{(int)TagsRobot.EMPTY, (int)TagsRobot.AT_HOME_POS,
+            TargetState.StateVec = new int[]{(int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_SCREW_POS,
                                              (int)TagsHuman.KNOW_TASK,(int)TagsHuman.KNOW_SCREW,(int)TagsHuman.KNOW_TOOL,(int)TagsHuman.KNOW_ASSISTANCE,
                                              (int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,(int)TagsHuman.EMPTY,(int)TagsHuman.AT_BODY_POS,
-                                             (int)TagsScrew.REMOVED, (int)TagsScrew.AT_BOX_MAGAZINE_POS, (int)TagsTool.AT_TOOL_MAGAZINE_POS,  (int)TagsBox.AT_BOX_MAGAZINE_POS };
+                                             (int)TagsScrew.REMOVED, (int)TagsScrew.AT_GRIPPER, (int)TagsTool.AT_TOOL_MAGAZINE_POS,  (int)TagsBox.AT_BOX_MAGAZINE_POS };
             return TargetState;
         }
         public static List<Action> createRobotActionSet()
@@ -310,6 +310,297 @@ namespace SearchTree
             #endregion
 
             return RobotActionSet;
+        }
+        public static List<Action> createHumanActionSet()
+        {        
+            #region Define Human Actions
+
+            #region Recognition Actions
+            Action RECOGNISE_TASK = new Action("RECOGNISE_TASK", 0,
+                new int[] { (int)TagsDim.HumanTask },
+                new int[] { (int)TagsHuman.DONT_KNOW_TASK},
+                new int[] { (int)TagsDim.HumanTask },
+                new int[] { (int)TagsHuman.KNOW_TASK });
+            Action RECOGNISE_SCREW = new Action("RECOGNISE_SCREW", 0,
+                new int[] { (int)TagsDim.HumanScrew },
+                new int[] { (int)TagsHuman.DONT_KNOW_SCREW },
+                new int[] { (int)TagsDim.HumanScrew },
+                new int[] { (int)TagsHuman.KNOW_SCREW });
+            Action RECOGNISE_TOOL = new Action("RECOGNISE_TOOL", 0,
+                new int[] { (int)TagsDim.HumanTool },
+                new int[] { (int)TagsHuman.DONT_KNOW_TOOL },
+                new int[] { (int)TagsDim.HumanTool },
+                new int[] { (int)TagsHuman.KNOW_TOOL });
+            Action RECOGNISE_ASSISTANCE = new Action("RECOGNISE_ASSISTANCE", 0,
+                new int[] { (int)TagsDim.HumanAssistance },
+                new int[] { (int)TagsHuman.DONT_KNOW_ASSISTANCE },
+                new int[] { (int)TagsDim.HumanAssistance },
+                new int[] { (int)TagsHuman.KNOW_ASSISTANCE });
+            #endregion
+
+            #region Goto Statements
+            Action L_GOTO_BODY_POS = new Action("L_GOTO_BODY_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.LeftHandPosition },
+                new int[] { (int)TagsHuman.AT_BODY_POS });
+            Action L_GOTO_LEFT_HAND_POS = new Action("L_GOTO_LEFT_HAND_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.LeftHandPosition },
+                new int[] { (int)TagsHuman.AT_LEFT_HAND_POS });
+            Action L_GOTO_RIGHT_HAND_POS = new Action("L_GOTO_RIGHT_HAND_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.LeftHandPosition },
+                new int[] { (int)TagsHuman.AT_RIGHT_HAND_POS });            
+            Action L_GOTO_SCREW_POS = new Action("L_GOTO_SCREW_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.LeftHandPosition },
+                new int[] { (int)TagsHuman.AT_SCREW_POS });
+            Action L_GOTO_TOOL_MAGAZIN_POS = new Action("L_GOTO_TOOL_MAGAZIN_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.LeftHandPosition },
+                new int[] { (int)TagsHuman.AT_TOOL_MAGAZINE_POS });
+            Action L_GOTO_BOX_MAGAZIN_POS = new Action("L_GOTO_BOX_MAGAZIN_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.LeftHandPosition },
+                new int[] { (int)TagsHuman.AT_BOX_MAGAZINE_POS });
+
+            Action R_GOTO_BODY_POS = new Action("R_GOTO_BODY_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.RightHandPosition },
+                new int[] { (int)TagsHuman.AT_BODY_POS });
+            Action R_GOTO_LEFT_HAND_POS = new Action("R_GOTO_LEFT_HAND_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.RightHandPosition },
+                new int[] { (int)TagsHuman.AT_LEFT_HAND_POS });
+            Action R_GOTO_RIGHT_HAND_POS = new Action("R_GOTO_RIGHT_HAND_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.RightHandPosition },
+                new int[] { (int)TagsHuman.AT_RIGHT_HAND_POS });
+            Action R_GOTO_SCREW_POS = new Action("R_GOTO_SCREW_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.RightHandPosition },
+                new int[] { (int)TagsHuman.AT_SCREW_POS });
+            Action R_GOTO_TOOL_MAGAZIN_POS = new Action("R_GOTO_TOOL_MAGAZIN_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.RightHandPosition },
+                new int[] { (int)TagsHuman.AT_TOOL_MAGAZINE_POS });
+            Action R_GOTO_BOX_MAGAZIN_POS = new Action("R_GOTO_BOX_MAGAZIN_POS", 0,
+                new int[] { },
+                new int[] { },
+                new int[] { (int)TagsDim.RightHandPosition },
+                new int[] { (int)TagsHuman.AT_BOX_MAGAZINE_POS });
+            #endregion
+
+            #region  Take Statements
+            Action L_TAKE_HANDED_TOOL = new Action("L_TAKE_HANDED_TOOL", 5,
+                new int[] { (int)TagsDim.RobotEffector,(int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_LEFT_HAND_POS,(int)TagsHuman.EMPTY, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsTool.AT_GRIPPER },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.EMPTY, (int)TagsHuman.HAS_OBJECT, (int)TagsTool.AT_HUMAN_LEFT_HAND });
+            Action L_TAKE_HANDED_BOX = new Action("L_TAKE_HANDED_BOX", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.EMPTY, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsBox.AT_GRIPPER },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.EMPTY, (int)TagsHuman.HAS_OBJECT, (int)TagsBox.AT_HUMAN_LEFT_HAND });
+            Action L_TAKE_TOOL = new Action("L_TAKE_TOOL", 2,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsHuman.AT_TOOL_MAGAZINE_POS, (int)TagsTool.AT_TOOL_MAGAZINE_POS },
+                new int[] { (int)TagsDim.LeftHand,  (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsTool.AT_HUMAN_LEFT_HAND });
+            Action L_TAKE_BOX = new Action("L_TAKE_BOX", 2,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsHuman.AT_BOX_MAGAZINE_POS, (int)TagsBox.AT_BOX_MAGAZINE_POS },
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsBox.AT_HUMAN_LEFT_HAND });
+
+            Action R_TAKE_HANDED_TOOL = new Action("R_TAKE_HANDED_TOOL", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.EMPTY, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsTool.AT_GRIPPER },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.EMPTY, (int)TagsHuman.HAS_OBJECT, (int)TagsTool.AT_HUMAN_RIGHT_HAND });
+            Action R_TAKE_HANDED_BOX = new Action("R_TAKE_HANDED_BOX", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.EMPTY, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsBox.AT_GRIPPER },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.EMPTY, (int)TagsHuman.HAS_OBJECT, (int)TagsBox.AT_HUMAN_RIGHT_HAND });
+            Action R_TAKE_TOOL = new Action("R_TAKE_TOOL", 2,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsHuman.AT_TOOL_MAGAZINE_POS, (int)TagsTool.AT_TOOL_MAGAZINE_POS },
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsTool.AT_HUMAN_RIGHT_HAND });
+            Action R_TAKE_BOX = new Action("R_TAKE_BOX", 2,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsHuman.AT_BOX_MAGAZINE_POS, (int)TagsBox.AT_BOX_MAGAZINE_POS },
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsBox.AT_HUMAN_RIGHT_HAND });
+
+            #endregion
+
+            #region Put Back Statements
+            Action L_RETURN_TOOL_TO_GRIPPER = new Action("L_RETURN_TOOL_TO_GRIPPER", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsTool.AT_HUMAN_LEFT_HAND },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsHuman.EMPTY, (int)TagsTool.AT_GRIPPER });
+            Action L_RETURN_BOX_TO_GRIPPER = new Action("L_RETURN_BOX_TO_GRIPPER", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_LEFT_HAND_POS, (int)TagsBox.AT_HUMAN_LEFT_HAND },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.LeftHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsHuman.EMPTY, (int)TagsBox.AT_GRIPPER });
+            Action L_PUT_BACK_TOOL = new Action("L_PUT_BACK_TOOL", 2,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_TOOL_MAGAZINE_POS, (int)TagsTool.AT_HUMAN_LEFT_HAND },
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsTool.AT_TOOL_MAGAZINE_POS });
+            Action L_PUT_BACK_BOX = new Action("L_PUT_BACK_BOX", 2,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_BOX_MAGAZINE_POS, (int)TagsBox.AT_HUMAN_LEFT_HAND },
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsBox.AT_BOX_MAGAZINE_POS });
+            Action L_PUT_SCREW_IN_HANDED_BOX = new Action("L_PUT_SCREW_IN_HANDED_BOX", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_LEFT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_LEFT_HAND_POS,(int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_LEFT_HAND, (int)TagsBox.AT_GRIPPER },
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsScrew.AT_BOX_MAGAZINE_POS });
+            Action L_PUT_SCREW_IN_BOX = new Action("PUT_SCREW_IN_BOX", 2,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_BOX_MAGAZINE_POS, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_LEFT_HAND, (int)TagsBox.AT_BOX_MAGAZINE_POS },
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsScrew.AT_BOX_MAGAZINE_POS });
+
+            Action R_RETURN_TOOL_TO_GRIPPER = new Action("R_RETURN_TOOL_TO_GRIPPER", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsTool.AT_HUMAN_RIGHT_HAND },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsHuman.EMPTY, (int)TagsTool.AT_GRIPPER });
+            Action R_RETURN_BOX_TO_GRIPPER = new Action("R_RETURN_BOX_TO_GRIPPER", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_GRIPPER, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsBox.AT_HUMAN_RIGHT_HAND },
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RightHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsHuman.EMPTY, (int)TagsBox.AT_GRIPPER });
+            Action R_PUT_BACK_TOOL = new Action("R_PUT_BACK_TOOL", 2,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_TOOL_MAGAZINE_POS, (int)TagsTool.AT_HUMAN_RIGHT_HAND },
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsTool.AT_TOOL_MAGAZINE_POS });
+            Action R_PUT_BACK_BOX = new Action("R_PUT_BACK_BOX", 2,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_BOX_MAGAZINE_POS, (int)TagsBox.AT_HUMAN_RIGHT_HAND },
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsBox.AT_BOX_MAGAZINE_POS });
+            Action R_PUT_SCREW_IN_HANDED_BOX = new Action("R_PUT_SCREW_IN_HANDED_BOX", 5,
+                new int[] { (int)TagsDim.RobotEffector, (int)TagsDim.RobotPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsRobot.AT_RIGHT_HAND_POS, (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_RIGHT_HAND_POS, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_RIGHT_HAND, (int)TagsBox.AT_GRIPPER },
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsScrew.AT_BOX_MAGAZINE_POS });
+            Action R_PUT_SCREW_IN_BOX = new Action("R_PUT_SCREW_IN_BOX", 2,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.BoxPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_BOX_MAGAZINE_POS, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_RIGHT_HAND, (int)TagsBox.AT_BOX_MAGAZINE_POS },
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsScrew.AT_BOX_MAGAZINE_POS });
+            #endregion
+
+            #region Loose Joint Statements
+            Action L_LOOSE_SCREW = new Action("L_LOOSE_SCREW", 30,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_SCREW_POS, (int)TagsScrew.TIGHTENED, (int)TagsScrew.AT_SCREW_POS, (int)TagsTool.AT_HUMAN_LEFT_HAND },
+                new int[] { (int)TagsDim.Screw },
+                new int[] { (int)TagsScrew.LOOSE });
+            Action L_LOOSE_SCREW_FULLY = new Action("L_LOOSE_SCREW_FULLY", 40,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_SCREW_POS, (int)TagsScrew.LOOSE, (int)TagsScrew.AT_SCREW_POS, (int)TagsTool.AT_HUMAN_LEFT_HAND },
+                new int[] { (int)TagsDim.LeftHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.AT_FULLY_LOOSE_SCREW_POS, (int)TagsScrew.FULLY_LOOSE, (int)TagsScrew.AT_FULLY_LOOSE_SCREW_POS });
+            Action L_REMOVE_SCREW = new Action("L_REMOVE_SCREW", 30,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsHuman.AT_FULLY_LOOSE_SCREW_POS, (int)TagsScrew.FULLY_LOOSE },
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_LEFT_HAND});
+            Action L_LOOSE_AND_REMOVE_SCREW = new Action("L_LOOSE_AND_REMOVE_SCREW", 50,
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.ToolPosition  },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsRobot.AT_SCREW_POS, (int)TagsHuman.EMPTY, (int)TagsRobot.AT_SCREW_POS, (int)TagsScrew.TIGHTENED, (int)TagsHuman.AT_SCREW_POS, (int)TagsTool.AT_HUMAN_LEFT_HAND },
+                new int[] { (int)TagsDim.RightHand,  (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_RIGHT_HAND });
+
+            Action R_LOOSE_SCREW = new Action("R_LOOSE_SCREW", 30,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_SCREW_POS, (int)TagsScrew.TIGHTENED, (int)TagsScrew.AT_SCREW_POS, (int)TagsTool.AT_HUMAN_RIGHT_HAND },
+                new int[] { (int)TagsDim.Screw },
+                new int[] { (int)TagsScrew.LOOSE });
+            Action R_LOOSE_SCREW_FULLY = new Action("R_LOOSE_SCREW_FULLY", 40,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsHuman.AT_SCREW_POS, (int)TagsScrew.LOOSE, (int)TagsScrew.AT_SCREW_POS, (int)TagsTool.AT_HUMAN_RIGHT_HAND },
+                new int[] { (int)TagsDim.RightHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.AT_FULLY_LOOSE_SCREW_POS, (int)TagsScrew.FULLY_LOOSE, (int)TagsScrew.AT_FULLY_LOOSE_SCREW_POS });
+            Action R_REMOVE_SCREW = new Action("R_REMOVE_SCREW", 30,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.EMPTY, (int)TagsHuman.AT_FULLY_LOOSE_SCREW_POS, (int)TagsScrew.FULLY_LOOSE },
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_RIGHT_HAND });
+            Action R_LOOSE_AND_REMOVE_SCREW = new Action("R_LOOSE_AND_REMOVE_SCREW", 50,
+                new int[] { (int)TagsDim.RightHand, (int)TagsDim.RightHandPosition, (int)TagsDim.LeftHand, (int)TagsDim.LeftHandPosition, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition, (int)TagsDim.ToolPosition },
+                new int[] { (int)TagsHuman.HAS_OBJECT, (int)TagsRobot.AT_SCREW_POS, (int)TagsHuman.EMPTY, (int)TagsRobot.AT_SCREW_POS, (int)TagsScrew.TIGHTENED, (int)TagsHuman.AT_SCREW_POS, (int)TagsTool.AT_HUMAN_RIGHT_HAND },
+                new int[] { (int)TagsDim.LeftHand, (int)TagsDim.Screw, (int)TagsDim.ScrewPosition },
+                new int[] { (int)TagsRobot.HAS_OBJECT, (int)TagsScrew.REMOVED, (int)TagsScrew.AT_HUMAN_LEFT_HAND });
+            #endregion
+            
+            #endregion
+            
+            // Create new List of which contains all possible Actions
+            List<Action> HumanActionSet = new List<Action>();
+
+            #region Fill List with actions
+
+            HumanActionSet.Add(L_GOTO_BODY_POS);
+            HumanActionSet.Add(R_GOTO_BODY_POS);
+            HumanActionSet.Add(L_GOTO_LEFT_HAND_POS);
+            HumanActionSet.Add(R_GOTO_LEFT_HAND_POS);
+            HumanActionSet.Add(L_GOTO_RIGHT_HAND_POS);
+            HumanActionSet.Add(R_GOTO_RIGHT_HAND_POS);
+            HumanActionSet.Add(L_GOTO_SCREW_POS);
+            HumanActionSet.Add(R_GOTO_SCREW_POS);
+            HumanActionSet.Add(L_GOTO_TOOL_MAGAZIN_POS);
+            HumanActionSet.Add(R_GOTO_TOOL_MAGAZIN_POS);
+            HumanActionSet.Add(L_GOTO_BOX_MAGAZIN_POS);
+            HumanActionSet.Add(R_GOTO_BOX_MAGAZIN_POS);
+            HumanActionSet.Add(L_TAKE_TOOL);
+            HumanActionSet.Add(R_TAKE_TOOL);
+            HumanActionSet.Add(L_TAKE_HANDED_TOOL);
+            HumanActionSet.Add(R_TAKE_HANDED_TOOL);
+            HumanActionSet.Add(L_TAKE_BOX);
+            HumanActionSet.Add(R_TAKE_BOX);
+            HumanActionSet.Add(L_TAKE_HANDED_BOX);
+            HumanActionSet.Add(R_TAKE_HANDED_BOX);
+            HumanActionSet.Add(L_PUT_BACK_TOOL);
+            HumanActionSet.Add(R_PUT_BACK_TOOL);
+            HumanActionSet.Add(L_PUT_BACK_BOX);
+            HumanActionSet.Add(R_PUT_BACK_BOX);
+            HumanActionSet.Add(L_RETURN_TOOL_TO_GRIPPER);
+            HumanActionSet.Add(R_RETURN_TOOL_TO_GRIPPER);
+            HumanActionSet.Add(L_RETURN_BOX_TO_GRIPPER);
+            HumanActionSet.Add(R_RETURN_BOX_TO_GRIPPER);
+            HumanActionSet.Add(L_LOOSE_SCREW);
+            HumanActionSet.Add(R_LOOSE_SCREW);
+            HumanActionSet.Add(L_LOOSE_SCREW_FULLY);
+            HumanActionSet.Add(R_LOOSE_SCREW_FULLY);
+            HumanActionSet.Add(L_REMOVE_SCREW);
+            HumanActionSet.Add(R_REMOVE_SCREW);
+            HumanActionSet.Add(L_LOOSE_AND_REMOVE_SCREW);
+            HumanActionSet.Add(R_LOOSE_AND_REMOVE_SCREW);
+            #endregion
+
+            return HumanActionSet;            
         }
         public static List<Action> PossibleActionSet(List<Action> ActionList, StateSpace State)
         {

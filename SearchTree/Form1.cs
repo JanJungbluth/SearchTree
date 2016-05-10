@@ -33,15 +33,54 @@ namespace SearchTree
         private List<Action> FullActionSet = new List<Action>();
         //create a list for all applicable actions in a given state
         private List<Action> ApplicableActionSet = new List<Action>();
+
+        
+        
+        
         
         #endregion
 
         public Form1()
         {
             InitializeComponent();
-
+            this.viewer.Click += new System.EventHandler(this.MyEvent_Click);
         }
 
+        // to get the state or the edge label displayed this function opens a MessageBox
+        // when the edge or node is selected in the viewer
+        private void MyEvent_Click(object sender, EventArgs e)
+        {
+            // first get the selected Object (could be a node or edge)
+            var en = this.viewer.SelectedObject;
+            //if its a node
+            if (en is Microsoft.Msagl.Drawing.Node)
+            {
+                // cast the Object to a node
+                Microsoft.Msagl.Drawing.Node CurNode = en as Microsoft.Msagl.Drawing.Node;
+                // search the node.id in the list of allstates list and
+                foreach (StateSpace CurState in this.AllStates)
+                    if (CurState.getId.ToString() == CurNode.Id)
+                    {
+                        MessageBox.Show(CurState.printEnumState());
+                        return;
+                    }
+
+                // in the list of the others states
+                foreach (StateSpace CurState in this.StatesWaitingToExpand)
+                    if (CurState.getId.ToString() == CurNode.Id)
+                    { 
+                        MessageBox.Show(CurState.printEnumState());
+                        return;
+                    }               
+            }
+            // if its a edge just display the label
+            else if(en is Microsoft.Msagl.Drawing.Edge)
+            {
+                Microsoft.Msagl.Drawing.Edge CurEdge = en as Microsoft.Msagl.Drawing.Edge;
+                MessageBox.Show(CurEdge.LabelText);
+            }
+        }
+        // Next step button
         private void button1_Click(object sender, EventArgs e)
         {
            
@@ -57,7 +96,7 @@ namespace SearchTree
             {
                 // create the new applicable action list ...
                 this.ApplicableActionSet = Helper.PossibleActionSet(this.FullActionSet, CurState);
-
+                // and use each action to generate a new State
                 foreach (Action CurAction in this.ApplicableActionSet)
                 {
                     //Create the new state
@@ -72,13 +111,17 @@ namespace SearchTree
                         // save the new state in the AllStates list
                         this.AllStates.Add(new StateSpace(CurState));
                         //Get the CurState Node
-                        Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
+                        Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.getId.ToString());
                         // Add a new node to the graph
-                        Microsoft.Msagl.Drawing.Node NewNode = new Microsoft.Msagl.Drawing.Node(NewState.printEnumState());
+                        Microsoft.Msagl.Drawing.Node NewNode = new Microsoft.Msagl.Drawing.Node(NewState.getId.ToString());
                         //NewNode.Attr.FillColor = new Microsoft.Msagl.Drawing.Color((byte)(NewState.Depth*10), (byte)(NewState.Depth * 10), (byte)(NewState.Depth * 10));
                         this.graph.AddNode(NewNode);
                         // Add a edge to the graph
-                        this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
+                        Microsoft.Msagl.Drawing.Label CurLabel = new Microsoft.Msagl.Drawing.Label(CurAction.Name);
+                        Microsoft.Msagl.Drawing.Edge CurEdge = new Microsoft.Msagl.Drawing.Edge(CurNode, NewNode, Microsoft.Msagl.Drawing.ConnectionToGraph.Connected);
+                        CurEdge.Label = CurLabel;
+                        //this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
+                        //this.graph.AddEdge(CurNode.Id, NewNode.Id);
                         //Remove the curent state from the StatewaitToExpand list
                         this.StatesWaitingToExpand.Remove(CurState);
                     }
@@ -88,15 +131,20 @@ namespace SearchTree
                         //get the state form the Allstates list 
                         StateSpace OldState = Helper.GetEqualState(this.AllStates, NewState);
                         //Get the CurState Node
-                        Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.printEnumState());
+                        Microsoft.Msagl.Drawing.Node CurNode = graph.FindNode(CurState.getId.ToString());
                         //Get the NewState Node
-                        Microsoft.Msagl.Drawing.Node NewNode = graph.FindNode(OldState.printEnumState());
+                        Microsoft.Msagl.Drawing.Node NewNode = graph.FindNode(OldState.getId.ToString());
                         //Create a temporary edge to check if it exist already
-                        Microsoft.Msagl.Drawing.Edge TempEdge = new Microsoft.Msagl.Drawing.Edge(CurNode.Id, CurAction.Name, NewNode.Id);
+                        //Microsoft.Msagl.Drawing.Edge TempEdge = new Microsoft.Msagl.Drawing.Edge(CurNode.Id, CurAction.Name, NewNode.Id);
+                        Microsoft.Msagl.Drawing.Edge TempEdge = new Microsoft.Msagl.Drawing.Edge(CurNode, NewNode, Microsoft.Msagl.Drawing.ConnectionToGraph.Connected);
                         if (!this.graph.Edges.Contains<Microsoft.Msagl.Drawing.Edge>(TempEdge))
                         {
                             //Add the arc between them
-                            this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
+                            Microsoft.Msagl.Drawing.Label CurLabel = new Microsoft.Msagl.Drawing.Label(CurAction.Name);
+                            Microsoft.Msagl.Drawing.Edge CurEdge = new Microsoft.Msagl.Drawing.Edge(CurNode, NewNode, Microsoft.Msagl.Drawing.ConnectionToGraph.Connected);
+                            CurEdge.Label = CurLabel;
+                            //this.graph.AddEdge(CurNode.Id, CurAction.Name, NewNode.Id);
+                            //this.graph.AddEdge(CurNode.Id, NewNode.Id);
                         }
                         
                     }
@@ -110,12 +158,12 @@ namespace SearchTree
                 foreach (StateSpace CurTarget in Targets)
                 {
                     this.TargetFound = new StateSpace( CurTarget);
-                    Microsoft.Msagl.Drawing.Node c = graph.FindNode(CurTarget.printEnumState());
+                    Microsoft.Msagl.Drawing.Node c = graph.FindNode(CurTarget.getId.ToString());
                     c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
                 }
 
         }
-
+        // First step Button
         private void button2_Click(object sender, EventArgs e)
         {
             // count the Depthcounter + 1
@@ -132,8 +180,15 @@ namespace SearchTree
             this.textBox1.AppendText("StartState: " + StartState.printEnumState()+Environment.NewLine);
             this.textBox1.AppendText("TargetState: " + TargetState.printEnumState()+Environment.NewLine);
             
-            // Then we create the all robot actions ...
-            this.FullActionSet = Helper.createRobotActionSet();
+            // Then we create the all robot and human actions ...
+            foreach(Action CurAction in Helper.createRobotActionSet())
+            {
+                this.FullActionSet.Add(CurAction);
+            }
+            /*foreach(Action CurAction in Helper.createHumanActionSet())
+            {
+                this.FullActionSet.Add(CurAction);
+            }*/
             // and then we print them in the textbox
             this.textBox1.AppendText("Full Action List" + Environment.NewLine);
             foreach (Action CurAction in FullActionSet)
@@ -147,7 +202,7 @@ namespace SearchTree
                 this.textBox1.AppendText(CurAction.Name + Environment.NewLine);
 
             //create the root node for the graph
-            Microsoft.Msagl.Drawing.Node StartNode = new Microsoft.Msagl.Drawing.Node(StartState.printEnumState());
+            Microsoft.Msagl.Drawing.Node StartNode = new Microsoft.Msagl.Drawing.Node(StartState.getId.ToString());
             this.graph.AddNode(StartNode);
             // Next we execute the applicable actions to the startstate and collect the new states in
             //the StatesWaitToExpand list
@@ -163,10 +218,14 @@ namespace SearchTree
                     // save the new state in the AllStates list
                     this.AllStates.Add(new StateSpace(CurState));
                     // Add a new node to the graph
-                    Microsoft.Msagl.Drawing.Node CurNode = new Microsoft.Msagl.Drawing.Node(CurState.printEnumState());
+                    Microsoft.Msagl.Drawing.Node CurNode = new Microsoft.Msagl.Drawing.Node(CurState.getId.ToString());
                     this.graph.AddNode(CurNode);
                     // Add a edge ( and the nodes ) to the graph
-                    this.graph.AddEdge(StartNode.Id, CurAction.Name, CurNode.Id);
+                    Microsoft.Msagl.Drawing.Label CurLabel = new Microsoft.Msagl.Drawing.Label(CurAction.Name);
+                    Microsoft.Msagl.Drawing.Edge CurEdge = new Microsoft.Msagl.Drawing.Edge(StartNode, CurNode, Microsoft.Msagl.Drawing.ConnectionToGraph.Connected );
+                    CurEdge.Label = CurLabel;
+                    //this.graph.AddEdge(StartNode.Id, CurAction.Name, CurNode.Id);
+                    //this.graph.AddEdge(StartNode.Id, CurNode.Id);
                 }
             }
 
@@ -175,7 +234,7 @@ namespace SearchTree
             if(Targets.Count < 0)
                 foreach(StateSpace CurTarget in Targets)
                 {
-                    Microsoft.Msagl.Drawing.Node c = graph.FindNode(CurTarget.printEnumState());
+                    Microsoft.Msagl.Drawing.Node c = graph.FindNode(CurTarget.getId.ToString());
                     c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
                 }
                
@@ -201,7 +260,7 @@ namespace SearchTree
         {
 
         }
-
+        //this is the refresh statistics button
         private void button3_Click(object sender, EventArgs e)
         {
             // Show the iteration setp in the textbox 2
@@ -231,7 +290,7 @@ namespace SearchTree
            
 
         }
-
+        // This is the redraw button
         private void button4_Click(object sender, EventArgs e)
         {
             // freeze the form logic
@@ -241,6 +300,67 @@ namespace SearchTree
             this.graph.LayoutAlgorithmSettings = new Microsoft.Msagl.Layout.MDS.MdsLayoutSettings();
             //bind the graph to the viewer 
             viewer.CurrentLayoutMethod = Microsoft.Msagl.GraphViewerGdi.LayoutMethod.UseSettingsOfTheGraph;
+            viewer.Graph = graph;
+            // add the Form control to the tabcontroler
+            this.tabControl1.TabPages[0].Controls.Add(viewer);
+            // doch the viewer with max size to the tabpage
+            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            // de-freeze the form logic
+            Graphform.ResumeLayout();
+            this.tabControl1.TabPages[0].ResumeLayout();
+            // refresh all visual things
+            this.Refresh();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            this.graph.AddNode(" 1 Hex head srew (1)");
+            this.graph.AddNode(" 1 Hex head srew (2)");
+            this.graph.AddNode(" 1 Hex head srew (3)");
+            this.graph.AddNode(" 1 Hex head srew (4)");
+            this.graph.AddNode(" 1 Hex head srew (5)");
+            this.graph.AddNode(" 1 Hex head srew (6)");
+            this.graph.AddNode(" 1 Hex head srew (7)");
+            this.graph.AddNode(" 1 Hex head srew (8)");
+            this.graph.AddNode(" 2 cover plate");
+            this.graph.AddNode(" 3 seal");
+            //this.graph.AddNode(" 4 Criclip ");
+            //this.graph.AddNode(" 5 hexagon socket screw (1)");
+            //this.graph.AddNode(" 5 hexagon socket screw (2)");
+            //this.graph.AddNode(" 6 encoder modul ");
+            this.graph.AddNode(" 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (1)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (1)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (1)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (2)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (2)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (2)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (3)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (3)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (3)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (4)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (4)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (4)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (5)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (5)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (5)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (6)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (6)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (6)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (7)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (7)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (7)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 1 Hex head srew (8)", "screw bound", " 2 cover plate");
+            this.graph.AddEdge(" 1 Hex head srew (8)", "screw bound", " 3 seal");
+            this.graph.AddEdge(" 1 Hex head srew (8)", "screw bound", " 0 drive body");
+            this.graph.AddEdge(" 2 cover plate", "lying on", " 3 seal");
+            this.graph.AddEdge(" 3 seal", "lying on", " 0 drive body");
+
+
+            // freeze the form logic
+            Graphform.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            //bind the graph to the viewer 
             viewer.Graph = graph;
             // add the Form control to the tabcontroler
             this.tabControl1.TabPages[0].Controls.Add(viewer);
